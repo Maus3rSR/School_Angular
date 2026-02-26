@@ -24,6 +24,10 @@ trigger: always_on
 - Pour les classes personnalisées, respecter la convention BEM (ex : `movie-card`, `movie-card__title`).
 - Ne pas “enseigner” DaisyUI : au maximum, rappeler qu’il s’agit d’une bibliothèque de composants CSS.
 
+Se rapprocher du design system de Netflix. Pas forcément les mêmes couleurs, mais les mêmes formes, cover, effets que netflix utilisent. Les images sont bien mis en avant visuellement.
+
+Pour les images tu peux utiliser https://lorem.space/ sur la partie movies
+
 4. Structure pédagogique globale (5 séances de 3h30)
 
 - Séance 1 : Explorer un projet Angular déjà initialisé, comprendre la structure, relier des données simples (interpolation, propriétés de composant) à la home.

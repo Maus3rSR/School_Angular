@@ -1,0 +1,56 @@
+<article class="card game-card" [attr.aria-label]="'Jeu ' + jeu().titre">
+  <figure class="game-card__cover">
+    <img
+      [src]="'https://dev.me/products/image-placeholder/300x450/Games/' + jeu().id"
+      [alt]="jeu().titre"
+      width="300"
+      height="450"
+      loading="lazy"
+    />
+  </figure>
+  <div class="card-body game-card__body">
+    <div class="game-card__badges">
+      <span class="badge badge-secondary">{{ jeu().categorie }}</span>
+      <span class="badge badge-ghost">{{ jeu().genre }}</span>
+    </div>
+
+    <h3 class="card-title game-card__title">{{ jeu().titre }}</h3>
+    <p class="game-card__meta">
+      {{ jeu().anneeSortie }} - {{ jeu().plateforme }}
+    </p>
+    <div class="game-card__rating">
+      <span class="game-card__rating-value">{{ jeu().note }}</span>
+      <span class="game-card__rating-max">/5</span>
+    </div>
+    <p class="game-card__synopsis">{{ jeu().synopsis }}</p>
+
+    <div class="card-actions game-card__actions">
+      <span
+        class="badge"
+        [class.badge-success]="jeu().disponible"
+        [class.badge-error]="!jeu().disponible"
+      >
+        @if (jeu().disponible) {
+          Disponible
+        } @else {
+          Bientot disponible
+        }
+      </span>
+
+      <button
+        type="button"
+        class="btn btn-sm"
+        [class.btn-primary]="estFavori()"
+        [class.btn-outline]="!estFavori()"
+        (click)="onToggleFavori()"
+        [attr.aria-pressed]="estFavori()"
+      >
+        @if (estFavori()) {
+          Retirer de la wishlist
+        } @else {
+          Ajouter a la wishlist
+        }
+      </button>
+    </div>
+  </div>
+</article>

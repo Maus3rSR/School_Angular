@@ -1,92 +1,6 @@
-.wishflix-shell {
-  min-height: 100vh;
-}
-
-.wishflix-shell__navbar {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-  padding-inline: clamp(1rem, 3vw, 2rem);
-}
-
-.wishflix-shell__brand {
-  font-size: 1.5rem;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-  color: #e50914;
-}
-
-.wishflix-shell__tagline {
-  margin-left: 0.5rem;
-  font-size: 0.875rem;
-  font-weight: 500;
-  opacity: 0.7;
-}
-
-.wishflix-main {
-  margin-inline: auto;
-  max-width: 72rem;
-  padding: 1rem;
-}
-
-.wishflix-hero {
-  border-radius: 1rem;
-  margin-bottom: 1.5rem;
-}
-
-.wishflix-hero__content {
-  justify-content: flex-start;
-  padding: clamp(1.25rem, 4vw, 2.5rem);
-}
-
-.wishflix-hero__title {
-  font-size: clamp(2rem, 5vw, 3rem);
-  font-weight: 700;
-}
-
-.wishflix-hero__slogan {
-  margin-top: 0.75rem;
-  max-width: 50ch;
-  font-size: 1.125rem;
-  opacity: 0.9;
-}
-
-.wishflix-hero__actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-top: 1.25rem;
-}
-
-.wishflix-catalogue__header {
-  margin-bottom: 1.5rem;
-}
-
-.wishflix-catalogue__title {
-  font-size: 1.75rem;
-  font-weight: 600;
-}
-
-.wishflix-catalogue__subtitle {
-  margin-top: 0.5rem;
-  opacity: 0.8;
-}
-
-.wishflix-catalogue__stats {
-  margin-bottom: 1rem;
-}
-
-.wishflix-catalogue__grid {
-  display: grid;
-  gap: 1.5rem;
-  grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
-}
-
 .game-card {
   border: 1px solid color-mix(in srgb, var(--color-base-content) 12%, transparent);
-  transition:
-    transform 0.3s ease,
-    box-shadow 0.3s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   overflow: hidden;
 }
 
@@ -172,9 +86,4 @@
   align-items: center;
   flex-wrap: wrap;
   gap: 0.5rem;
-}
-
-.wishflix-todo {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
 }

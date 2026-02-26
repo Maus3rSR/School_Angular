@@ -1,78 +1,125 @@
-# Seance 1 sur 5 - Explorer le projet et lier des donnees simples
+# Séance 1 sur 5 - Fondations Angular
 
-## 1) Objectifs pedagogiques
+## 1) Objectifs pédagogiques
 
-- Comprendre la structure minimale d'une application Angular.
-- Identifier le role de `src/main.ts`, du composant racine et des templates.
-- Relier des donnees du composant vers l'interface (interpolation).
-- Faire le lien entre le projet technique et le besoin metier WishFlix.
+- Comprendre la structure d'une application Angular moderne (standalone components)
+- Découvrir les **Signals** : `signal()`, `computed()`, `effect()`
+- Maîtriser le **data binding** : interpolation, property binding, event binding
+- Utiliser le **control flow moderne** : `@if`, `@for`, `@switch`
+- Construire la home WishFlix avec une liste statique et un filtrage simple
 
-## 2) Prerequis concrets
+## 2) Prérequis concrets
 
-- Projet lance avec `pnpm start`.
-- Fichiers a ouvrir:
-  - `src/main.ts`
-  - `src/app/app.ts`
-  - `src/app/app.template.html`
-  - `src/app/app.css`
+- Projet lancé avec `pnpm start`
+- Fichiers à ouvrir :
+  - `src/main.ts` (point d'entrée)
+  - `src/app/app.ts` (composant racine)
+  - `src/app/app.template.html` (UI complète déjà présente)
+- **État initial du projet** :
+  - ✅ L'interface est 100% terminée visuellement (cartes de jeux, filtres, boutons)
+  - ❌ Aucun code Angular fonctionnel (pas de signals, pas de méthodes implémentées)
+  - 📝 Des TODO indiquent où ajouter la logique
 
-## 3) Explication theorique vulgarisee (contexte mini Netflix)
+## 3) Explication théorique vulgarisée (contexte WishFlix)
 
-Dans WishFlix, le composant racine joue le role de "page d'accueil" initiale.
-Il contient des informations metier simples (nom de l'application, slogan, liste de films de depart) et les affiche dans le template.
+### Standalone components
 
-Une interpolation, c'est quand on affiche une valeur TypeScript dans le HTML avec `{{ ... }}`.
-Exemple concret: afficher `nomApplication` dans la barre du haut.
+WishFlix utilise des **composants autonomes** (standalone), la façon moderne de créer des composants Angular. Plus besoin de modules : chaque composant déclare ses propres dépendances.
+
+### Signals : la réactivité moderne
+
+Un **Signal** est une valeur qui "prévient" Angular quand elle change. Comme un panneau lumineux qui s'allume automatiquement.
+
+- `signal()` : crée une valeur réactive (ex: liste de jeux vidéo)
+- `computed()` : calcule automatiquement une valeur dérivée (ex: jeux filtrés)
+- `effect()` : réagit aux changements (ex: logger dans la console)
+
+### Control flow moderne
+
+Angular propose maintenant une syntaxe native pour les conditions et boucles :
+
+- `@if (condition) { ... }` au lieu de `*ngIf`
+- `@for (item of items; track item.id) { ... }` au lieu de `*ngFor`
+- `@switch` au lieu de `*ngSwitch`
+
+### Data binding
+
+- **Interpolation** : `{{ titre }}` affiche une valeur
+- **Property binding** : `[src]="imageUrl"` lie une propriété
+- **Event binding** : `(click)="filtrer()"` réagit à un événement
 
 ## 4) Lien avec le code du projet
 
-- `app.ts`: contient les proprietes metier (`nomApplication`, `slogan`, `films`).
-- `app.template.html`: affiche ces donnees dans la page.
-- `app.css`: style local du composant.
+- `home.component.ts` : contient les signals (catalogue de jeux, filtre actif)
+- `home.component.html` : affiche la liste avec `@for`, les filtres avec `@if`
+- Les jeux vidéo sont représentés par une interface `Game` avec titre, genre, image, etc.
 
-## 5) Etapes de la demo formateur (recette)
+## 5) Étapes de la démo formateur (recette)
 
-### Demo A - Lire la structure
+### Démo A - Découvrir les Signals
 
-1. Montrer le point d'entree (`main.ts`) puis le composant racine.
-2. Expliquer la separation: TypeScript (logique) / HTML (affichage) / CSS (presentation).
-3. Relier ce schema au besoin metier: page d'accueil WishFlix.
+1. Ouvrir `app.ts` et montrer la structure vide du composant
+2. Expliquer qu'on va créer un signal pour stocker les jeux : `games = signal<Game[]>([])`
+3. Montrer comment initialiser avec des données statiques
+4. Créer un `computed()` pour filtrer les jeux disponibles
+5. Afficher dans la console avec `effect()` pour voir les changements en temps réel
 
-### Demo B - Modifier une donnee metier
+### Démo B - Afficher la liste avec @for
 
-1. Changer la valeur de `slogan` dans `app.ts`.
-2. Sauvegarder et observer le rafraichissement automatique dans le navigateur.
-3. Expliquer pourquoi Angular met a jour l'affichage.
+1. Ouvrir `app.template.html` et repérer la zone où afficher les jeux
+2. **Le template HTML est déjà complet** avec toutes les cartes stylées
+3. Ajouter `@for (jeu of games(); track jeu.id)` pour rendre la liste dynamique
+4. Remplacer les données statiques du template par `{{ jeu.titre }}`, `{{ jeu.genre }}`, etc.
+5. Vérifier que l'affichage fonctionne dans le navigateur
 
-### Demo C - Ajouter une information simple
+### Démo C - Ajouter un filtre avec @if
 
-1. Ajouter une propriete metier courte (ex: texte d'accroche de section).
-2. L'afficher dans le template via interpolation.
-3. Verifier la lisibilite et le vocabulaire metier.
+1. Créer un signal `showOnlyAvailable = signal(false)`
+2. **Le bouton existe déjà dans le template**, ajouter l'event binding `(click)="toggleFilter()"`
+3. Implémenter la méthode `toggleFilter()` qui inverse la valeur du signal
+4. Créer un `computed()` nommé `filteredGames` qui filtre selon `showOnlyAvailable()`
+5. Utiliser `@if` pour afficher un badge indiquant le filtre actif
 
-## 6) Enonce de l'exercice etudiant (version 2)
+## 6) Énoncé de l'exercice étudiant (version 2)
 
-Objectif: personnaliser l'accueil WishFlix.
+**Objectif** : Ajouter un filtre par genre de jeu vidéo
 
-- Ajouter 2 proprietes metier dans `app.ts` (ex: message de bienvenue et nom de la promo).
-- Les afficher dans la zone hero de `app.template.html`.
-- Ne pas toucher a la configuration Angular, Tailwind ou DaisyUI.
+**Point de départ** :
 
-Resultat attendu dans le navigateur:
-- la page affiche clairement les nouvelles informations sans erreur.
+- ✅ Les boutons de genre existent déjà visuellement dans le template
+- ❌ Ils ne sont pas connectés à la logique Angular
+- 📝 Un TODO indique où ajouter le code
 
-Indices:
-- Utiliser l'interpolation `{{ ... }}`.
-- Reutiliser le style deja en place.
+Contraintes :
 
-## 7) Questions d'auto-evaluation
+- Créer un signal `selectedGenre = signal<string | null>(null)`
+- Trouver les boutons de genre dans le template et ajouter `(click)="selectGenre('Action')"`
+- Implémenter la méthode `selectGenre(genre: string | null)`
+- Créer un `computed()` nommé `visibleGames` qui combine les deux filtres
+- Utiliser `@if` pour afficher un message quand la liste est vide
 
-- Quel fichier demarre l'application Angular?
-- Quelle est la difference entre `app.ts` et `app.template.html`?
-- Que se passe-t-il si je modifie une propriete affichee dans le template?
+Résultat attendu dans le navigateur :
+
+- Cliquer sur "Action" filtre uniquement les jeux d'action
+- Cliquer sur "Tous" restaure l'affichage complet
+- Un message "Aucun jeu ne correspond" s'affiche si nécessaire
+- Le compteur de jeux se met à jour automatiquement
+
+Indices :
+
+- Le template HTML est déjà complet, ne pas le recréer
+- Utiliser `computed()` pour éviter de dupliquer la logique de filtrage
+- Penser à mettre à jour `visibleGames` dans le `@for`
+
+## 7) Questions d'auto-évaluation
+
+- Quelle différence entre `signal()` et `computed()` ?
+- Pourquoi utiliser `@for` avec `track` plutôt que sans ?
+- Quelle est la différence entre `{{ }}`, `[]` et `()` dans un template ?
 
 ## 8) Pistes d'extension (bonus)
 
-- Ajouter une etiquette de progression differente (ex: "Demarrage du projet").
-- Afficher un compteur du nombre total de films presents dans la liste initiale.
-- Tester un texte conditionnel simple pour preparer la seance 2.
+- Ajouter un compteur de jeux affichés avec `computed()`
+- Créer un signal pour trier par note (croissant/décroissant)
+- Utiliser `@switch` pour afficher différents messages selon le nombre de résultats
+- Ajouter un `effect()` qui sauvegarde le filtre actif dans `localStorage`

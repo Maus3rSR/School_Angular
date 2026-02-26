@@ -1,0 +1,18 @@
+<section class="game-section" [attr.aria-label]="titre()">
+  <h2 class="game-section__title">{{ titre() }}</h2>
+  <div class="game-section__scroll">
+    @for (jeu of jeux(); track jeu.id) {
+      <div class="game-section__item">
+        <img
+          [src]="'https://dev.me/products/image-placeholder/200x300/Games/' + jeu.id"
+          [alt]="jeu.titre"
+          width="200"
+          height="300"
+          loading="lazy"
+          class="game-section__cover"
+        />
+        <p class="game-section__item-title">{{ jeu.titre }}</p>
+      </div>
+    }
+  </div>
+</section>

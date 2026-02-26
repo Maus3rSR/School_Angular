@@ -1,81 +1,130 @@
-# Seance 2 sur 5 - Rendre la home dynamique
+# Séance 2 sur 5 - Composants et communication
 
-## 1) Objectifs pedagogiques
+## 1) Objectifs pédagogiques
 
-- Utiliser une boucle pour afficher une liste de films.
-- Utiliser une condition pour afficher un message selon l'etat.
-- Gerer des clics utilisateur avec un binding d'evenement.
-- Comprendre l'interet des signaux pour l'etat local.
+- Découper l'UI en composants réutilisables (GameCard, GameSection)
+- Maîtriser la communication parent-enfant avec `input()` et `output()`
+- Comprendre `ChangeDetectionStrategy.OnPush` pour les performances
+- Utiliser les signals dérivés avec `computed()`
+- Gérer les favoris avec des signals partagés
 
-## 2) Prerequis concrets
+## 2) Prérequis concrets
 
-- Avoir termine la seance 1.
-- Fichiers a ouvrir:
-  - `src/app/app.ts`
-  - `src/app/app.template.html`
-- TODO de reference dans le code:
-  - `appliquerFiltreGenre(...)` dans `app.ts`
+- Avoir terminé la séance 1 (signals et filtres fonctionnels dans `app.ts`)
+- Fichiers à ouvrir :
+  - `src/app/app.ts` (composant parent avec logique)
+  - `src/app/components/game-card/game-card.component.ts` (structure vide à compléter)
+  - `src/app/components/game-section/game-section.component.ts` (structure vide à compléter)
+- **État initial** :
+  - ✅ Les composants GameCard et GameSection existent déjà avec leurs templates HTML complets
+  - ❌ Aucun `input()` / `output()` déclaré, aucune logique implémentée
+  - 📝 Des TODO indiquent où ajouter les inputs/outputs
 
-## 3) Explication theorique vulgarisee (contexte mini Netflix)
+## 3) Explication théorique vulgarisée (contexte WishFlix)
 
-Dans un mini Netflix, le contenu change selon les actions utilisateur:
-- afficher tous les films ou seulement ceux disponibles,
-- ajouter ou retirer un favori,
-- filtrer le catalogue.
+### Pourquoi découper en composants ?
 
-L'interface n'est plus statique: elle reactualise automatiquement l'affichage selon l'etat actuel.
+Actuellement, la home affiche tout dans un seul gros template. Quand le projet grandit, cela devient difficile à maintenir. Le découpage permet :
+
+- **Réutilisation** : la carte de jeu peut servir ailleurs (favoris, recherche)
+- **Clarté** : chaque composant a une responsabilité précise
+- **Testabilité** : on peut tester une carte indépendamment
+
+### Communication parent-enfant moderne
+
+Angular propose maintenant des **fonctions** au lieu de decorators :
+
+- `input()` : le parent passe des données à l'enfant
+- `output()` : l'enfant notifie le parent d'un événement
+
+Exemple : la carte (enfant) reçoit un jeu via `input()` et émet un événement "favori cliqué" via `output()`.
+
+### ChangeDetectionStrategy.OnPush
+
+Cette stratégie dit à Angular : "ne vérifie ce composant que si ses inputs changent". Avec les signals, c'est automatique et performant.
+
+### Signals dérivés
+
+Un `computed()` recalcule automatiquement sa valeur quand les signals dont il dépend changent. Parfait pour "jeux filtrés" ou "nombre de favoris".
 
 ## 4) Lien avec le code du projet
 
-- `filmsVisibles` (etat derive) decide quoi afficher.
-- `@for` parcourt la liste de films.
-- `@if` affiche les variantes d'interface (liste vide, libelles de boutons, etc.).
-- `basculerFiltreDisponibilite()` et `basculerFavori(...)` reagissent aux clics.
+- **HomeComponent** (parent) : garde l'état global (catalogue, favoris, filtres)
+- **GameCardComponent** (enfant) : affiche un jeu, émet des événements (clic favori, clic détail)
+- **GameSectionComponent** (enfant) : regroupe un titre + une liste de cartes
+- Les favoris sont gérés par un signal dans le parent, accessible via `computed()`
 
-## 5) Etapes de la demo formateur (recette)
+## 5) Étapes de la démo formateur (recette)
 
-### Demo A - Lire la boucle
+### Démo A - Compléter GameCardComponent
 
-1. Reperer la boucle d'affichage des cartes films dans le template.
-2. Montrer le lien entre chaque carte et un element de la liste.
-3. Verifier que le tracking se fait avec l'identifiant metier.
+1. Ouvrir `src/app/components/game-card/game-card.component.ts` (déjà créé)
+2. **Le template HTML est déjà complet** avec toute la carte stylée
+3. Ajouter `changeDetection: ChangeDetectionStrategy.OnPush` dans le decorator
+4. Créer l'input : `game = input.required<Game>()`
+5. Créer l'output : `favoriteToggle = output<number>()`
+6. Dans le template, remplacer les données statiques par `game().titre`, `game().image`, etc.
+7. Connecter le bouton favori : `(click)="onToggleFavorite()"`
 
-### Demo B - Lire et expliquer un clic
+### Démo B - Utiliser GameCardComponent dans app.ts
 
-1. Cliquer sur "Ajouter aux favoris".
-2. Montrer la methode appelee dans `app.ts`.
-3. Expliquer la mise a jour du signal puis le re-rendu.
+1. Importer `GameCardComponent` dans `App` (composant racine)
+2. Dans `app.template.html`, remplacer le HTML de la carte par `<app-game-card>`
+3. Passer le jeu : `[game]="jeu"`
+4. Écouter l'événement : `(favoriteToggle)="toggleFavorite($event)"`
+5. Vérifier que l'affichage et les interactions fonctionnent
 
-### Demo C - Completer un TODO simple
+### Démo C - Ajouter la logique des favoris
 
-1. Ouvrir le TODO `appliquerFiltreGenre(...)`.
-2. Definir une logique minimale de filtre sans casser l'existant.
-3. Ajouter un controle simple dans l'interface pour tester le filtre.
+1. Créer un signal `favoriteIds = signal<Set<number>>(new Set())`
+2. Créer un `computed()` : `isFavorite = computed(() => favoriteIds().has(game().id))`
+3. Dans GameCard, afficher une icône différente selon `isFavorite()`
+4. Implémenter `toggleFavorite()` qui modifie le Set avec `.update()`
 
-## 6) Enonce de l'exercice etudiant (version 2)
+## 6) Énoncé de l'exercice étudiant (version 2)
 
-Objectif: ajouter un mini filtre metier par genre.
+**Objectif** : Compléter GameSectionComponent pour organiser les jeux par catégorie
 
-- Completer `appliquerFiltreGenre(genre: GenreFilm | 'Tous'): void`.
-- Ajouter des boutons de filtre dans le template.
-- Garder le filtre de disponibilite deja existant.
+**Point de départ** :
 
-Contraintes:
-- Rester dans `app.ts` et `app.template.html`.
-- Conserver un code lisible (noms metier explicites).
+- ✅ Le composant GameSectionComponent existe avec son template HTML complet
+- ❌ Aucun input/output déclaré, classe TypeScript vide
+- 📝 Un TODO indique où ajouter le code
 
-Resultat attendu dans le navigateur:
-- la liste se met a jour quand on choisit un genre,
-- le bouton "Tous" restaure l'affichage attendu.
+Contraintes :
 
-## 7) Questions d'auto-evaluation
+- Ajouter les inputs :
+  - `title = input.required<string>()`
+  - `games = input.required<Game[]>()`
+- Ajouter l'output : `favoriteToggle = output<number>()`
+- Utiliser `ChangeDetectionStrategy.OnPush`
+- Dans le template, remplacer le titre statique par `{{ title() }}`
+- Remplacer la boucle statique par `@for (game of games(); track game.id)`
+- Remonter l'événement : `(favoriteToggle)="favoriteToggle.emit($event)"`
 
-- Quelle difference entre un etat "source" et un etat "derive"?
-- Pourquoi utilise-t-on un identifiant unique dans la boucle?
-- Que se passe-t-il si la liste de films visibles devient vide?
+Résultat attendu dans le navigateur :
+
+- La home affiche plusieurs sections (ex: "Action", "RPG", "Nouveautés")
+- Chaque section a son titre et sa liste de jeux
+- Les favoris fonctionnent toujours correctement
+- Le code de HomeComponent est plus court et lisible
+
+Indices :
+
+- Utiliser `(favoriteToggle)="favoriteToggle.emit($event)"` pour remonter l'événement
+- Le parent garde la logique métier, les enfants sont "présentationnels"
+
+## 7) Questions d'auto-évaluation
+
+- Quelle différence entre `input()` et `output()` ?
+- Pourquoi utiliser `ChangeDetectionStrategy.OnPush` ?
+- Qu'est-ce qu'un composant "présentationnel" vs "container" ?
+- Comment un `computed()` sait-il quand se recalculer ?
+- Pourquoi utiliser `input.required()` plutôt que `input()` ?
 
 ## 8) Pistes d'extension (bonus)
 
-- Ajouter un compteur de films par genre.
-- Ajouter un tri simple (note ou annee).
-- Preparer une extraction de la carte film vers un composant dedie (seance 3).
+- Créer un GameBadgeComponent pour afficher la note avec des étoiles
+- Ajouter une projection de contenu (`<ng-content>`) dans GameSection
+- Créer un signal `viewMode` (grille/liste) et adapter l'affichage
+- Extraire les filtres dans un FilterBarComponent réutilisable

@@ -1,37 +1,34 @@
 <div class="wishflix-shell">
-  <header class="navbar wishflix-shell__navbar bg-base-100 shadow-sm" aria-label="Navigation principale">
+  <header class="navbar wishflix-shell__navbar" aria-label="Navigation principale">
     <div class="navbar-start">
       <p class="wishflix-shell__brand">{{ nomApplication }}</p>
+      <span class="wishflix-shell__tagline">Gaming</span>
     </div>
 
     <div class="navbar-end">
-      <span class="badge badge-primary badge-outline">{{ progression }}</span>
+      <!-- Navigation utilisateur -->
     </div>
   </header>
 
   <main class="wishflix-main" id="contenu-principal">
-    <section class="hero wishflix-hero bg-base-100" aria-labelledby="titre-hero">
+    <section class="hero wishflix-hero" aria-labelledby="titre-hero">
       <div class="hero-content wishflix-hero__content">
         <div>
-          <h1 id="titre-hero" class="text-4xl font-bold">Bienvenue sur {{ nomApplication }}</h1>
+          <h1 id="titre-hero" class="wishflix-hero__title">Bienvenue sur {{ nomApplication }}</h1>
           <p class="wishflix-hero__slogan">{{ slogan }}</p>
 
           <div class="wishflix-hero__actions">
             <button type="button" class="btn btn-primary" (click)="basculerFiltreDisponibilite()">
               @if (afficherSeulementDisponibles()) {
-                Afficher tout le catalogue
+              Afficher tout le catalogue
               } @else {
-                Afficher seulement les films disponibles
+              Afficher seulement les jeux disponibles
               }
             </button>
 
-            <button
-              type="button"
-              class="btn btn-outline"
-              [disabled]="nombreFavoris() === 0"
-              (click)="reinitialiserFavoris()"
-            >
-              Vider mes favoris
+            <button type="button" class="btn btn-outline" [disabled]="nombreFavoris() === 0"
+              (click)="reinitialiserFavoris()">
+              Vider ma wishlist ({{ nombreFavoris() }})
             </button>
           </div>
         </div>
@@ -40,83 +37,82 @@
 
     <section aria-labelledby="titre-catalogue" class="wishflix-catalogue">
       <div class="wishflix-catalogue__header">
-        <h2 id="titre-catalogue" class="text-2xl font-semibold">Catalogue de depart</h2>
+        <h2 id="titre-catalogue" class="wishflix-catalogue__title">Catalogue de jeux</h2>
         <p class="wishflix-catalogue__subtitle">
-          Base de travail pour la progression en 5 seances.
+          Decouvre notre selection de jeux video
         </p>
       </div>
 
       <div class="stats shadow wishflix-catalogue__stats" role="group" aria-label="Statistiques catalogue">
         <div class="stat">
-          <div class="stat-title">Films visibles</div>
-          <div class="stat-value text-primary">{{ filmsVisibles().length }}</div>
+          <div class="stat-title">Jeux disponibles</div>
+          <div class="stat-value text-primary">{{ jeuxVisibles().length }}</div>
         </div>
 
         <div class="stat">
-          <div class="stat-title">Favoris</div>
-          <div class="stat-value">{{ nombreFavoris() }}</div>
+          <div class="stat-title">Ma Wishlist</div>
+          <div class="stat-value text-accent">{{ nombreFavoris() }}</div>
         </div>
       </div>
 
-      @if (filmsVisibles().length === 0) {
-        <p class="alert alert-info" role="status">
-          Aucun film visible pour l'instant. Verifie le filtre puis recharge les donnees.
-        </p>
+      @if (jeuxVisibles().length === 0) {
+      <p class="alert alert-info" role="status">
+        Aucun jeu visible pour l'instant. Verifie le filtre puis recharge les donnees.
+      </p>
       } @else {
-        <div class="wishflix-catalogue__grid">
-          @for (film of filmsVisibles(); track film.id) {
-            <article class="card bg-base-100 shadow-xl movie-card" aria-label="Film {{ film.titre }}">
-              <div class="card-body">
-                <div class="movie-card__badges">
-                  <span class="badge badge-secondary">{{ film.categorie }}</span>
-                  <span class="badge badge-ghost">{{ film.genre }}</span>
-                </div>
+      <div class="wishflix-catalogue__grid">
+        @for (jeu of jeuxVisibles(); track jeu.id) {
+        <article class="card game-card" aria-label="Jeu {{ jeu.titre }}">
+          <figure class="game-card__cover">
+            <img [src]="'https://dev.me/products/image-placeholder/300x450/Games/' + jeu.id" [alt]="jeu.titre"
+              width="300" height="450" loading="lazy" />
+          </figure>
+          <div class="card-body game-card__body">
+            <div class="game-card__badges">
+              <span class="badge badge-secondary">{{ jeu.categorie }}</span>
+              <span class="badge badge-ghost">{{ jeu.genre }}</span>
+            </div>
 
-                <h3 class="card-title movie-card__title">{{ film.titre }}</h3>
-                <p class="movie-card__meta">
-                  {{ film.anneeSortie }} - {{ film.dureeMinutes }} min - Note {{ film.note }}/5
-                </p>
-                <p>{{ film.synopsis }}</p>
+            <h3 class="card-title game-card__title">{{ jeu.titre }}</h3>
+            <p class="game-card__meta">
+              {{ jeu.anneeSortie }} - {{ jeu.plateforme }}
+            </p>
+            <div class="game-card__rating">
+              <span class="game-card__rating-value">{{ jeu.note }}</span>
+              <span class="game-card__rating-max">/5</span>
+            </div>
+            <p class="game-card__synopsis">{{ jeu.synopsis }}</p>
 
-                <div class="card-actions justify-between items-center">
-                  <span
-                    class="badge"
-                    [class.badge-success]="film.disponible"
-                    [class.badge-error]="!film.disponible"
-                  >
-                    @if (film.disponible) {
-                      Disponible
-                    } @else {
-                      Bientot disponible
-                    }
-                  </span>
+            <div class="card-actions game-card__actions">
+              <span class="badge" [class.badge-success]="jeu.disponible" [class.badge-error]="!jeu.disponible">
+                @if (jeu.disponible) {
+                Disponible
+                } @else {
+                Bientot disponible
+                }
+              </span>
 
-                  <button
-                    type="button"
-                    class="btn btn-sm"
-                    [class.btn-primary]="estEnFavoris(film.id)"
-                    [class.btn-outline]="!estEnFavoris(film.id)"
-                    (click)="basculerFavori(film.id)"
-                    [attr.aria-pressed]="estEnFavoris(film.id)"
-                  >
-                    @if (estEnFavoris(film.id)) {
-                      Retirer des favoris
-                    } @else {
-                      Ajouter aux favoris
-                    }
-                  </button>
-                </div>
-              </div>
-            </article>
-          }
-        </div>
+              <button type="button" class="btn btn-sm" [class.btn-primary]="estEnFavoris(jeu.id)"
+                [class.btn-outline]="!estEnFavoris(jeu.id)" (click)="basculerFavori(jeu.id)"
+                [attr.aria-pressed]="estEnFavoris(jeu.id)">
+                @if (estEnFavoris(jeu.id)) {
+                Retirer de la wishlist
+                } @else {
+                Ajouter a la wishlist
+                }
+              </button>
+            </div>
+          </div>
+        </article>
+        }
+      </div>
       }
     </section>
 
     <section class="alert alert-warning wishflix-todo" aria-label="Feuille de route pedagogique">
       <span>
-        TODO pedagogiques: Seance 2 (filtres et interactions), Seance 3 (decoupage en composants),
-        Seance 4 (services + routing), Seance 5 (formulaires reactifs).
+        TODO pedagogiques: Seance 2 (composants et communication), Seance 3 (services HTTP),
+        Seance 4 (routing et navigation), Seance 5 (formulaires et authentification).
       </span>
     </section>
   </main>

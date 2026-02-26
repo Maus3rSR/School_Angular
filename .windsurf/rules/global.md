@@ -12,7 +12,37 @@ trigger: always_on
 
 2. Périmètre technique
 
-- Le projet Angular + Tailwind + DaisyUI est DÉJÀ initialisé et fonctionnel. L'ensemble du code "placeholder" (composants, services, routes) nécessaire aux 5 séances doit être présent dès le départ dans le dépôt, prêt à être complété par le professeur et les étudiants.
+**Principe fondamental : UI complète, code Angular vide**
+
+- Le projet Angular + Tailwind + DaisyUI est DÉJÀ initialisé avec une **interface utilisateur complète et finale**.
+- **L'UI est 100% terminée visuellement** : tous les composants, toutes les pages, tous les éléments d'interface sont présents et stylés (cartes de jeux, navbar, formulaires, pages de détail, favoris, login, etc.).
+- **Le code Angular est une coquille vide NON FONCTIONNELLE** : pas de signals, pas de méthodes implémentées, pas de logique métier, pas d'appels HTTP. Uniquement les structures de base (classes vides, méthodes vides avec TODO).
+- **Approche pédagogique** : Le professeur démontre un concept en live coding, l'étudiant reproduit du code similaire dans les TODO. Pas de reverse engineering.
+
+**Exemple concret** :
+
+- ✅ Un accordéon existe visuellement dans le template (HTML + CSS complet)
+- ❌ Aucun code TypeScript pour le faire fonctionner (pas de signal, pas de méthode toggle)
+- 📝 TODO indique où ajouter la logique Angular
+
+**Ce qui est présent au départ** :
+
+- Structure complète des composants (fichiers .ts, .html, .css)
+- Templates HTML complets avec toutes les classes DaisyUI
+- Interfaces TypeScript pour les modèles de données
+- Services avec méthodes vides et TODO
+- Routes déclarées mais vides
+- Guards avec logique minimale à compléter
+
+**Ce qui est absent au départ** :
+
+- Aucun signal fonctionnel
+- Aucune méthode implémentée (sauf structure vide)
+- Aucun appel HTTP
+- Aucune logique de filtrage, tri, recherche
+- Aucune gestion d'état réactive
+- Aucun formulaire connecté
+
 - Les étudiants ne modifient pas la configuration de build, ni la configuration Tailwind/DaisyUI.
 - Tu te concentres sur Angular : composants, templates, data binding, services, routing, formulaires.
 - DaisyUI est utilisé uniquement pour simplifier le CSS, pas comme sujet pédagogique principal.

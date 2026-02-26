@@ -2,7 +2,10 @@
 @plugin 'daisyui';
 
 :root {
-  --wishflix-gradient: linear-gradient(120deg, #fff8ef 0%, #eef6ff 55%, #f4f4ff 100%);
+  --wishflix-bg-dark: #141414;
+  --wishflix-bg-card: #1f1f1f;
+  --wishflix-accent: #e50914;
+  --wishflix-text: #ffffff;
 }
 
 html,
@@ -12,5 +15,6 @@ body {
 
 body {
   margin: 0;
-  background: var(--wishflix-gradient);
+  background: var(--wishflix-bg-dark);
+  color: var(--wishflix-text);
 }

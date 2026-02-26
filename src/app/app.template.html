@@ -12,19 +12,42 @@
 
   <main class="wishflix-main" id="contenu-principal">
     <section class="hero wishflix-hero" aria-labelledby="titre-hero">
+      <figure class="wishflix-hero__backdrop">
+        <img
+          ngSrc="https://via.assets.so/game.png?id=42&q=95&w=1920&h=1080&fit=cover"
+          alt="Backdrop du jeu mis en avant Cyber Nexus 2077"
+          width="1920"
+          height="1080"
+          priority
+        />
+      </figure>
+      <div class="wishflix-hero__veil" aria-hidden="true"></div>
+
       <div class="hero-content wishflix-hero__content">
-        <div>
-          <h1 id="titre-hero" class="wishflix-hero__title">Bienvenue sur {{ nomApplication }}</h1>
+        <div class="wishflix-hero__text">
+          <p class="wishflix-hero__kicker">NOUVEAUTE WISHFLIX</p>
+          <div class="wishflix-hero__meta">
+            <span class="badge badge-primary">A la une</span>
+            <span class="badge badge-ghost">Action RPG</span>
+            <span class="badge badge-outline">PC, PS5, Xbox</span>
+          </div>
+
+          <h1 id="titre-hero" class="wishflix-hero__title">Cyber Nexus 2077</h1>
           <p class="wishflix-hero__slogan">
-            Ton mini Netflix pour decouvrir un catalogue de jeux video.
+            Bienvenue sur {{ nomApplication }}. Decouvre une megalopole en guerre, des choices
+            moraux extremes et des combats ultra-dynamiques.
+          </p>
+          <p class="wishflix-hero__description">
+            Cette semaine, plonge dans Cyber Nexus 2077: une aventure futuriste avec une ville
+            ouverte, des choix narratifs et des combats intenses.
           </p>
 
-          <div class="wishflix-hero__actions">
-            <button type="button" class="btn btn-primary">
-              Afficher seulement les jeux disponibles
-            </button>
+          <p class="wishflix-hero__details">2023 | 4.5/5 | 42h d'histoire principale</p>
 
-            <button type="button" class="btn btn-outline" disabled>Vider ma wishlist (0)</button>
+          <div class="wishflix-hero__actions">
+            <button type="button" class="btn btn-primary btn-lg">Lancer la lecture</button>
+
+            <button type="button" class="btn btn-outline btn-lg">Plus d'infos</button>
           </div>
         </div>
       </div>

@@ -37,13 +37,7 @@ Cette séance transforme WishFlix en application privée partielle: l'utilisateu
 
 - Exercices étudiants: dossier `docs/exercices/`.
 
-## 8) Questions d'auto-évaluation
-
-- Pourquoi préférer Reactive Forms ici ?
-- Où stocker le token et pourquoi ?
-- Pourquoi un interceptor est plus propre qu'un header manuel dans chaque service ?
-
-## 9) Pistes d'extension (bonus)
+## 8) Pistes d'extension (bonus)
 
 - Ajouter un validateur custom de mot de passe fort.
 - Gérer la déconnexion automatique sur 401.

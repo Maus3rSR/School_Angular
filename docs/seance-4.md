@@ -36,13 +36,7 @@ Le routing transforme WishFlix en vraie SPA: on garde la fluidité d'une app, to
 
 - Exercices étudiants: dossier `docs/exercices/`.
 
-## 8) Questions d'auto-évaluation
-
-- Quand utiliser `loadComponent` ?
-- Pourquoi la route `**` doit rester en dernier ?
-- Que doit retourner un guard pour rediriger ?
-
-## 9) Pistes d'extension (bonus)
+## 8) Pistes d'extension (bonus)
 
 - Ajouter un resolver pour précharger la page détail.
 - Ajouter un guard `canDeactivate` sur le formulaire login.

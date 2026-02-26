@@ -36,13 +36,7 @@ Le découpage permet de réutiliser les cartes de jeux (home, wishlist, résulta
 
 - Exercices étudiants: dossier `docs/exercices/`.
 
-## 8) Questions d'auto-évaluation
-
-- Quand créer un composant plutôt que laisser dans `App` ?
-- Quelle info passe en `input()` et quel événement passe en `output()` ?
-- Pourquoi `OnPush` est utile sur des cartes de catalogue ?
-
-## 9) Pistes d'extension (bonus)
+## 8) Pistes d'extension (bonus)
 
 - Ajouter la projection de contenu sur `GameSectionComponent`.
 - Ajouter un mode d'affichage grille/liste.

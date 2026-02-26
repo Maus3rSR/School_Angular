@@ -37,13 +37,7 @@ Le service devient la source de vérité des jeux. Cela évite de dupliquer la l
 
 - Exercices étudiants: dossier `docs/exercices/`.
 
-## 8) Questions d'auto-évaluation
-
-- Pourquoi déplacer la logique HTTP dans un service ?
-- Quand préférer `toSignal()` à un `subscribe()` manuel ?
-- Comment afficher proprement un état d'erreur API dans le template ?
-
-## 9) Pistes d'extension (bonus)
+## 8) Pistes d'extension (bonus)
 
 - Ajouter un cache mémoire dans le service.
 - Ajouter un filtre de recherche côté backend.

@@ -43,13 +43,6 @@ On part d'une home monolithique avec 6 jeux en dur. Le but est de la rendre dyna
 
 - Exercices étudiants: dossier `docs/exercices/`.
 
-## 8) Questions d'auto-évaluation
-
-- Pourquoi `signal()` est plus pratique qu'une variable classique ici ?
-- Quand utiliser `computed()` plutôt qu'une méthode classique ?
-- Que change `@for (...; track ...)` sur une liste de cartes ?
-
-## 9) Pistes d'extension (bonus)
+## 8) Pistes d'extension (bonus)
 
 - Ajouter un tri par note.
-- Sauvegarder le filtre actif dans `localStorage`.

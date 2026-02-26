@@ -13,6 +13,7 @@ Rappels de code a fournir:
 ```ts
 import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
 
+// Type metier: structure d'un jeu dans le catalogue WishFlix.
 type Game = {
   id: number;
   title: string;
@@ -25,6 +26,7 @@ type Game = {
   available: boolean;
 };
 
+// Signal principal: source de verite locale de la liste de jeux.
 protected readonly games = signal<Game[]>([
   { id: 1, title: 'Cyber Nexus 2077', genre: 'RPG', category: 'Nouveautes', year: 2023, platform: 'PC, PS5, Xbox', rating: 4.5, synopsis: 'Un RPG futuriste dans un monde cyberpunk.', available: true },
   { id: 2, title: 'Stellar Odyssey', genre: 'Aventure', category: 'Nouveautes', year: 2023, platform: 'PC, PS5', rating: 4.8, synopsis: 'Une aventure spatiale epique.', available: true },
@@ -51,8 +53,10 @@ Rappels de code a fournir:
 
 ```html
 <div class="wishflix-catalogue__grid">
+  <!-- track game.id permet a Angular de reutiliser les cartes existantes au lieu de recreer tout le DOM -->
   @for (game of games(); track game.id) {
   <article class="card movie-card game-card" [attr.aria-label]="'Jeu ' + game.title">
+    <!-- ngSrc active NgOptimizedImage (perf + bonnes pratiques image) -->
     <img
       [ngSrc]="'https://via.assets.so/game.png?id=' + game.id + '&q=95&w=300&h=450&fit=cover'"
       [alt]="game.title"
@@ -82,17 +86,22 @@ Fichiers a modifier:
 Rappels de code a fournir:
 
 ```ts
+// Etat UI: false = on affiche tout, true = seulement les jeux disponibles.
 protected readonly showOnlyAvailable = signal(false);
+
+// Etat derive: se recalcule automatiquement quand showOnlyAvailable ou games change.
 protected readonly visibleGames = computed(() =>
   this.showOnlyAvailable() ? this.games().filter((g) => g.available) : this.games(),
 );
 
 protected toggleAvailabilityFilter(): void {
+  // Update immutable du signal (pas de mutation directe).
   this.showOnlyAvailable.update((v) => !v);
 }
 ```
 
 ```html
+<!-- Un clic met a jour showOnlyAvailable, ce qui recalcule visibleGames() automatiquement -->
 <button type="button" class="btn btn-primary" (click)="toggleAvailabilityFilter()">...</button>
 <div class="stat-value text-primary">{{ visibleGames().length }}</div>
 ```

@@ -5,44 +5,52 @@ description: Utiliser l'API Image Placeholder pour les visuels de jeux vidéo
 
 ## API Image Placeholder
 
-L'API https://dev.me/products/image-placeholder fournit des images placeholder pour le projet WishFlix.
+L'API `https://via.assets.so/game.png` fournit des images placeholder pour le projet WishFlix.
 
 ### URL de base
+
 ```
-https://dev.me/products/image-placeholder
+https://via.assets.so/game.png
 ```
 
 ### Paramètres disponibles
 
-- **Catégorie** : Toujours utiliser `Games` pour les jeux vidéo
-- **Dimensions** : Format portrait recommandé (ex: 300x450, 400x600)
-- **ID** : Identifiant unique pour obtenir une image cohérente
+- **id** : Identifiant unique pour obtenir une image cohérente
+- **q** : Qualité de l'image (ex: `95`)
+- **w** : Largeur de l'image
+- **h** : Hauteur de l'image
+- **fit** : Mode de redimensionnement (utiliser `contain`)
+- **Dimensions recommandées** (inspirées Netflix)
+  - **Poster portrait** : 300x450 (ratio 2:3, format standard des affiches)
+  - **Poster large** : 342x513 ou 185x278 (miniatures Netflix)
+  - **Backdrop paysage** : 780x439 ou 1280x720 (ratio 16:9, bannières)
+  - **Thumbnail carré** : 150x150 ou 200x200 (icônes de profil)
 
 ### Formats d'URL recommandés
 
 **Image de jeu (format portrait)** :
+
 ```
-https://dev.me/products/image-placeholder/300x450/Games/{id}
+https://via.assets.so/game.png?id={id}&q=95&w=300&h=450&fit=cover
 ```
 
 **Image de jeu (format large)** :
+
 ```
-https://dev.me/products/image-placeholder/600x400/Games/{id}
+https://via.assets.so/game.png?id={id}&q=95&w=600&h=400&fit=cover
 ```
 
 ### Bonnes pratiques
 
 1. **Cohérence** : Utiliser un ID fixe pour chaque jeu afin d'avoir toujours la même image
-2. **Format portrait** : Privilégier le format portrait (300x450 ou 400x600) pour reproduire l'expérience Netflix
-3. **Catégorie Games uniquement** : Ne jamais utiliser d'autre catégorie que `Games`
-4. **NgOptimizedImage** : Utiliser la directive Angular `NgOptimizedImage` pour optimiser le chargement
-5. **Alt text** : Toujours fournir un texte alternatif descriptif (nom du jeu)
+2. **Cohérence des paramètres** : Utiliser `q=95` et `fit=contain` sur tout le projet
+3. **Alt text** : Toujours fournir un texte alternatif descriptif (nom du jeu)
 
 ### Exemple d'utilisation dans un template
 
 ```html
-<img 
-  [ngSrc]="'https://dev.me/products/image-placeholder/300x450/Games/' + game.id"
+<img
+  [ngSrc]="'https://via.assets.so/game.png?id=' + game.id + '&q=95&w=300&h=450&fit=cover'"
   [alt]="game.title"
   width="300"
   height="450"
@@ -52,13 +60,13 @@ https://dev.me/products/image-placeholder/600x400/Games/{id}
 
 ### Contexte pédagogique
 
-- **Séance 1** : Utiliser des URLs statiques dans le template
-- **Séance 2** : Passer l'URL via `@Input()` au composant GameCard
+- **Séance 1** : Utiliser des URLs statiques en dur dans `app.template.html`
+- **Séance 2** : Passer l'URL via `input()` au composant GameCard
 - **Séance 3** : Construire dynamiquement l'URL dans le service à partir des données API
 - **Séance 4** : Charger l'image de détail sur la page du jeu
 
 ### Notes importantes
 
 - L'API ne nécessite pas d'authentification
-- Les images sont générées aléatoirement mais restent cohérentes pour un même ID
+- Les images restent cohérentes pour un même `id`
 - En production, ces URLs seraient remplacées par de vraies images de jeux Steam

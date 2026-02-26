@@ -15,21 +15,16 @@
       <div class="hero-content wishflix-hero__content">
         <div>
           <h1 id="titre-hero" class="wishflix-hero__title">Bienvenue sur {{ nomApplication }}</h1>
-          <p class="wishflix-hero__slogan">{{ slogan }}</p>
+          <p class="wishflix-hero__slogan">
+            Ton mini Netflix pour decouvrir un catalogue de jeux video.
+          </p>
 
           <div class="wishflix-hero__actions">
-            <button type="button" class="btn btn-primary" (click)="basculerFiltreDisponibilite()">
-              @if (afficherSeulementDisponibles()) {
-              Afficher tout le catalogue
-              } @else {
+            <button type="button" class="btn btn-primary">
               Afficher seulement les jeux disponibles
-              }
             </button>
 
-            <button type="button" class="btn btn-outline" [disabled]="nombreFavoris() === 0"
-              (click)="reinitialiserFavoris()">
-              Vider ma wishlist ({{ nombreFavoris() }})
-            </button>
+            <button type="button" class="btn btn-outline" disabled>Vider ma wishlist (0)</button>
           </div>
         </div>
       </div>
@@ -38,82 +33,244 @@
     <section aria-labelledby="titre-catalogue" class="wishflix-catalogue">
       <div class="wishflix-catalogue__header">
         <h2 id="titre-catalogue" class="wishflix-catalogue__title">Catalogue de jeux</h2>
-        <p class="wishflix-catalogue__subtitle">
-          Decouvre notre selection de jeux video
-        </p>
+        <p class="wishflix-catalogue__subtitle">Decouvre notre selection de jeux video</p>
       </div>
 
-      <div class="stats shadow wishflix-catalogue__stats" role="group" aria-label="Statistiques catalogue">
+      <div
+        class="stats shadow wishflix-catalogue__stats"
+        role="group"
+        aria-label="Statistiques catalogue"
+      >
         <div class="stat">
           <div class="stat-title">Jeux disponibles</div>
-          <div class="stat-value text-primary">{{ jeuxVisibles().length }}</div>
+          <div class="stat-value text-primary">6</div>
         </div>
 
         <div class="stat">
           <div class="stat-title">Ma Wishlist</div>
-          <div class="stat-value text-accent">{{ nombreFavoris() }}</div>
+          <div class="stat-value text-accent">0</div>
         </div>
       </div>
 
-      @if (jeuxVisibles().length === 0) {
-      <p class="alert alert-info" role="status">
-        Aucun jeu visible pour l'instant. Verifie le filtre puis recharge les donnees.
-      </p>
-      } @else {
       <div class="wishflix-catalogue__grid">
-        @for (jeu of jeuxVisibles(); track jeu.id) {
-        <article class="card game-card" aria-label="Jeu {{ jeu.titre }}">
+        <article class="card movie-card game-card" aria-label="Jeu Cyber Nexus 2077">
           <figure class="game-card__cover">
-            <img [src]="'https://dev.me/products/image-placeholder/300x450/Games/' + jeu.id" [alt]="jeu.titre"
-              width="300" height="450" loading="lazy" />
+            <img
+              ngSrc="https://via.assets.so/game.png?id=1&q=95&w=300&h=450&fit=cover"
+              alt="Cyber Nexus 2077"
+              width="300"
+              height="450"
+              loading="lazy"
+            />
           </figure>
           <div class="card-body game-card__body">
             <div class="game-card__badges">
-              <span class="badge badge-secondary">{{ jeu.categorie }}</span>
-              <span class="badge badge-ghost">{{ jeu.genre }}</span>
+              <span class="badge badge-secondary">Nouveautes</span>
+              <span class="badge badge-ghost">RPG</span>
             </div>
 
-            <h3 class="card-title game-card__title">{{ jeu.titre }}</h3>
-            <p class="game-card__meta">
-              {{ jeu.anneeSortie }} - {{ jeu.plateforme }}
-            </p>
+            <h3 class="card-title game-card__title">Cyber Nexus 2077</h3>
+            <p class="game-card__meta">2023 - PC, PS5, Xbox</p>
             <div class="game-card__rating">
-              <span class="game-card__rating-value">{{ jeu.note }}</span>
+              <span class="game-card__rating-value">4.5</span>
               <span class="game-card__rating-max">/5</span>
             </div>
-            <p class="game-card__synopsis">{{ jeu.synopsis }}</p>
+            <p class="game-card__synopsis">
+              Plongez dans une metropole cyberpunk ou vos choix faconnent le destin de la ville.
+            </p>
 
             <div class="card-actions game-card__actions">
-              <span class="badge" [class.badge-success]="jeu.disponible" [class.badge-error]="!jeu.disponible">
-                @if (jeu.disponible) {
-                Disponible
-                } @else {
-                Bientot disponible
-                }
-              </span>
+              <span class="badge badge-success">Disponible</span>
 
-              <button type="button" class="btn btn-sm" [class.btn-primary]="estEnFavoris(jeu.id)"
-                [class.btn-outline]="!estEnFavoris(jeu.id)" (click)="basculerFavori(jeu.id)"
-                [attr.aria-pressed]="estEnFavoris(jeu.id)">
-                @if (estEnFavoris(jeu.id)) {
-                Retirer de la wishlist
-                } @else {
+              <button type="button" class="btn btn-sm btn-outline" aria-pressed="false">
                 Ajouter a la wishlist
-                }
               </button>
             </div>
           </div>
         </article>
-        }
-      </div>
-      }
-    </section>
 
-    <section class="alert alert-warning wishflix-todo" aria-label="Feuille de route pedagogique">
-      <span>
-        TODO pedagogiques: Seance 2 (composants et communication), Seance 3 (services HTTP),
-        Seance 4 (routing et navigation), Seance 5 (formulaires et authentification).
-      </span>
+        <article class="card movie-card game-card" aria-label="Jeu Stellar Warfare">
+          <figure class="game-card__cover">
+            <img
+              ngSrc="https://via.assets.so/game.png?id=2&q=95&w=300&h=450&fit=cover"
+              alt="Stellar Warfare"
+              width="300"
+              height="450"
+              loading="lazy"
+            />
+          </figure>
+          <div class="card-body game-card__body">
+            <div class="game-card__badges">
+              <span class="badge badge-secondary">Nouveautes</span>
+              <span class="badge badge-ghost">Action</span>
+            </div>
+
+            <h3 class="card-title game-card__title">Stellar Warfare</h3>
+            <p class="game-card__meta">2024 - PC, PS5</p>
+            <div class="game-card__rating">
+              <span class="game-card__rating-value">4.2</span>
+              <span class="game-card__rating-max">/5</span>
+            </div>
+            <p class="game-card__synopsis">
+              Combat spatial intense dans un univers en guerre. Pilotez votre vaisseau et dominez la
+              galaxie.
+            </p>
+
+            <div class="card-actions game-card__actions">
+              <span class="badge badge-success">Disponible</span>
+
+              <button type="button" class="btn btn-sm btn-outline" aria-pressed="false">
+                Ajouter a la wishlist
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card movie-card game-card" aria-label="Jeu Kingdom Tactics">
+          <figure class="game-card__cover">
+            <img
+              ngSrc="https://via.assets.so/game.png?id=3&q=95&w=300&h=450&fit=cover"
+              alt="Kingdom Tactics"
+              width="300"
+              height="450"
+              loading="lazy"
+            />
+          </figure>
+          <div class="card-body game-card__body">
+            <div class="game-card__badges">
+              <span class="badge badge-secondary">Populaires</span>
+              <span class="badge badge-ghost">Strategie</span>
+            </div>
+
+            <h3 class="card-title game-card__title">Kingdom Tactics</h3>
+            <p class="game-card__meta">2023 - PC</p>
+            <div class="game-card__rating">
+              <span class="game-card__rating-value">4.7</span>
+              <span class="game-card__rating-max">/5</span>
+            </div>
+            <p class="game-card__synopsis">
+              Batissez votre empire medieval et menez vos armees vers la victoire strategique.
+            </p>
+
+            <div class="card-actions game-card__actions">
+              <span class="badge badge-success">Disponible</span>
+
+              <button type="button" class="btn btn-sm btn-outline" aria-pressed="false">
+                Ajouter a la wishlist
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card movie-card game-card" aria-label="Jeu Shadow Legends">
+          <figure class="game-card__cover">
+            <img
+              ngSrc="https://via.assets.so/game.png?id=4&q=95&w=300&h=450&fit=cover"
+              alt="Shadow Legends"
+              width="300"
+              height="450"
+              loading="lazy"
+            />
+          </figure>
+          <div class="card-body game-card__body">
+            <div class="game-card__badges">
+              <span class="badge badge-secondary">Classiques</span>
+              <span class="badge badge-ghost">Aventure</span>
+            </div>
+
+            <h3 class="card-title game-card__title">Shadow Legends</h3>
+            <p class="game-card__meta">2020 - PC, PS4, Xbox</p>
+            <div class="game-card__rating">
+              <span class="game-card__rating-value">4.8</span>
+              <span class="game-card__rating-max">/5</span>
+            </div>
+            <p class="game-card__synopsis">
+              Une aventure epique dans un monde fantastique rempli de mysteres et de dangers.
+            </p>
+
+            <div class="card-actions game-card__actions">
+              <span class="badge badge-success">Disponible</span>
+
+              <button type="button" class="btn btn-sm btn-outline" aria-pressed="false">
+                Ajouter a la wishlist
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card movie-card game-card" aria-label="Jeu Pixel Warriors">
+          <figure class="game-card__cover">
+            <img
+              ngSrc="https://via.assets.so/game.png?id=5&q=95&w=300&h=450&fit=cover"
+              alt="Pixel Warriors"
+              width="300"
+              height="450"
+              loading="lazy"
+            />
+          </figure>
+          <div class="card-body game-card__body">
+            <div class="game-card__badges">
+              <span class="badge badge-secondary">Populaires</span>
+              <span class="badge badge-ghost">Independant</span>
+            </div>
+
+            <h3 class="card-title game-card__title">Pixel Warriors</h3>
+            <p class="game-card__meta">2022 - PC, Switch</p>
+            <div class="game-card__rating">
+              <span class="game-card__rating-value">4.3</span>
+              <span class="game-card__rating-max">/5</span>
+            </div>
+            <p class="game-card__synopsis">
+              Un jeu retro-pixel art melant action et exploration dans un univers colore et
+              dynamique.
+            </p>
+
+            <div class="card-actions game-card__actions">
+              <span class="badge badge-success">Disponible</span>
+
+              <button type="button" class="btn btn-sm btn-outline" aria-pressed="false">
+                Ajouter a la wishlist
+              </button>
+            </div>
+          </div>
+        </article>
+
+        <article class="card movie-card game-card" aria-label="Jeu Battle Royale Arena">
+          <figure class="game-card__cover">
+            <img
+              ngSrc="https://via.assets.so/game.png?id=6&q=95&w=300&h=450&fit=cover"
+              alt="Battle Royale Arena"
+              width="300"
+              height="450"
+              loading="lazy"
+            />
+          </figure>
+          <div class="card-body game-card__body">
+            <div class="game-card__badges">
+              <span class="badge badge-secondary">Nouveautes</span>
+              <span class="badge badge-ghost">Multijoueur</span>
+            </div>
+
+            <h3 class="card-title game-card__title">Battle Royale Arena</h3>
+            <p class="game-card__meta">2024 - PC, PS5, Xbox</p>
+            <div class="game-card__rating">
+              <span class="game-card__rating-value">4.1</span>
+              <span class="game-card__rating-max">/5</span>
+            </div>
+            <p class="game-card__synopsis">
+              100 joueurs, une arene, un seul survivant. Le battle royale ultime.
+            </p>
+
+            <div class="card-actions game-card__actions">
+              <span class="badge badge-error">Bientot disponible</span>
+
+              <button type="button" class="btn btn-sm btn-outline" aria-pressed="false">
+                Ajouter a la wishlist
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
     </section>
   </main>
 </div>

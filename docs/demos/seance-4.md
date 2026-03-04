@@ -1,6 +1,15 @@
 # Demos formateur - Seance 4
 
+Objectif de la seance: passer d'une home monolithique a une app multi-pages avec routing lazy et protection de route.
+
 ## Sous-concept 1 - Creer les pages standalone
+
+Implementation pas a pas (ordre conseille):
+
+1. Creer les 4 pages (`home`, `game-detail`, `wishlist`, `not-found`).
+2. Mettre un template minimal par page pour valider l'affichage de chaque route.
+3. Importer uniquement les composants/directives necessaires dans chaque page.
+4. Ajouter la logique metier plus tard (apres validation du routing).
 
 Dossiers/fichiers a creer:
 
@@ -14,8 +23,6 @@ Rappel de code a fournir (exemple Home):
 ```ts
 @Component({
   selector: 'app-home-page',
-  // OnPush: la page se met a jour quand ses entrees/signaux changent.
-  changeDetection: ChangeDetectionStrategy.OnPush,
   // Imports locaux: en standalone, on declare ici les composants utilises.
   imports: [GameSectionComponent],
   templateUrl: './home.page.html',
@@ -24,7 +31,18 @@ Rappel de code a fournir (exemple Home):
 export class HomePage {}
 ```
 
+Check rapide navigateur:
+
+- Si tu charges directement le composant dans une route de test, la page doit s'afficher sans erreur d'import.
+
 ## Sous-concept 2 - Configurer le routing lazy
+
+Implementation pas a pas (ordre conseille):
+
+1. Declarer la redirection `'' -> /home`.
+2. Ajouter les routes metier (`home`, `game/:id`, `wishlist`).
+3. Ajouter la wildcard `**` en dernier.
+4. Remplacer le contenu central de `app.template.html` par `<router-outlet />`.
 
 Fichiers a modifier:
 
@@ -34,26 +52,21 @@ Fichiers a modifier:
 Rappels de code a fournir:
 
 ```ts
+import { Routes } from '@angular/router';
+import { GameDetailPage } from './pages/game-detail/game-detail.page';
+import { HomePage } from './pages/home/home.page';
+import { NotFoundPage } from './pages/not-found/not-found.page';
+import { WishlistPage } from './pages/wishlist/wishlist.page';
+
 export const routes: Routes = [
   // Redirection de la racine vers la page principale.
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  // loadComponent: lazy loading (la page est chargee seulement quand necessaire).
-  { path: 'home', loadComponent: () => import('./pages/home/home.page').then((m) => m.HomePage) },
+  { path: 'home', component: HomePage },
   // :id = parametre dynamique dans l'URL pour afficher un jeu cible.
-  {
-    path: 'game/:id',
-    loadComponent: () =>
-      import('./pages/game-detail/game-detail.page').then((m) => m.GameDetailPage),
-  },
-  {
-    path: 'wishlist',
-    loadComponent: () => import('./pages/wishlist/wishlist.page').then((m) => m.WishlistPage),
-  },
+  { path: 'game/:id', component: GameDetailPage },
+  { path: 'wishlist', component: WishlistPage },
   // Route wildcard: doit rester en dernier pour capter les URLs inconnues.
-  {
-    path: '**',
-    loadComponent: () => import('./pages/not-found/not-found.page').then((m) => m.NotFoundPage),
-  },
+  { path: '**', component: NotFoundPage },
 ];
 ```
 
@@ -62,7 +75,20 @@ export const routes: Routes = [
 <router-outlet />
 ```
 
+Check rapide navigateur:
+
+- `/home` affiche la home.
+- `/game/1` affiche la page detail.
+- une URL inconnue affiche la 404.
+
 ## Sous-concept 3 - Ajouter le guard
+
+Implementation pas a pas (ordre conseille):
+
+1. Creer `authGuard` dans `src/app/guards/auth.guard.ts`.
+2. Injecter `AuthService` et `Router` via `inject()`.
+3. Retourner `true` si authentifie, sinon `UrlTree` vers `/login`.
+4. Brancher le guard sur la route `wishlist` dans `app.routes.ts`.
 
 Dossiers/fichiers a creer:
 
@@ -79,3 +105,8 @@ export const authGuard: CanActivateFn = () => {
   return authService.isAuthenticated() ? true : router.createUrlTree(['/login']);
 };
 ```
+
+Check rapide navigateur:
+
+- Non connecte: acces `/wishlist` redirige vers `/login`.
+- Connecte: acces `/wishlist` autorise.

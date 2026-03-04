@@ -4,6 +4,12 @@
 
 Objectif: sortir les donnees du HTML statique vers `app.ts`.
 
+Implementation pas a pas (ordre conseille):
+
+1. Creer/placer le type `Game` dans `app.ts`.
+2. Copier les donnees statiques dans un signal `games`.
+3. Verifier que le projet compile avant de toucher au template.
+
 Fichiers a modifier:
 
 - `src/app/app.ts`
@@ -11,7 +17,7 @@ Fichiers a modifier:
 Rappels de code a fournir:
 
 ```ts
-import { ChangeDetectionStrategy, Component, computed, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 
 // Type metier: structure d'un jeu dans le catalogue WishFlix.
 type Game = {
@@ -45,6 +51,13 @@ Resultat attendu navigateur:
 
 Objectif: remplacer les cartes dupliquees en dur par une boucle `@for`.
 
+Implementation pas a pas (ordre conseille):
+
+1. Isoler une seule carte HTML (celle qui sera repetee).
+2. Entourer la carte avec `@for (game of games(); track game.id)`.
+3. Remplacer les valeurs statiques (`title`, image) par les bindings `game.*`.
+4. Supprimer les cartes dupliquees restantes.
+
 Fichiers a modifier:
 
 - `src/app/app.template.html`
@@ -77,6 +90,13 @@ Resultat attendu navigateur:
 ## Sous-concept 3 - Filtres et compteurs avec computed
 
 Objectif: filtrer la liste et afficher le nombre de jeux visibles.
+
+Implementation pas a pas (ordre conseille):
+
+1. Ajouter le signal `showOnlyAvailable`.
+2. Ajouter le `computed()` `visibleGames`.
+3. Brancher la methode `toggleAvailabilityFilter()` au bouton.
+4. Remplacer les usages de `games()` par `visibleGames()` dans la grille et le compteur.
 
 Fichiers a modifier:
 

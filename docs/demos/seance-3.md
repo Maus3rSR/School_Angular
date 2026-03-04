@@ -2,6 +2,14 @@
 
 ## Sous-concept 1 - Creer GameService et HttpClient
 
+Implementation pas a pas (ordre conseille):
+
+1. Creer l'interface/type `Game` dans `src/app/models/game.model.ts`.
+2. Creer `GameService` avec `providedIn: 'root'`.
+3. Injecter `HttpClient` via `inject()`.
+4. Ajouter `getGames()` typee en `Observable<Game[]>`.
+5. Activer `provideHttpClient()` dans `app.config.ts`.
+
 Dossiers/fichiers a creer:
 
 - `src/app/services/game.service.ts`
@@ -33,7 +41,19 @@ export class GameService {
 providers: [provideBrowserGlobalErrorListeners(), provideHttpClient(), provideRouter(routes)],
 ```
 
+Check rapide navigateur:
+
+- L'application compile sans erreur d'injection `HttpClient`.
+- Aucun appel API n'est encore visible tant que `GameService` n'est pas consomme dans `App`.
+
 ## Sous-concept 2 - Consommer l'API dans App
+
+Implementation pas a pas (ordre conseille):
+
+1. Creer `environment.ts` et `environment.development.ts` avec `apiUrl`.
+2. Injecter `GameService` dans `App`.
+3. Convertir `getGames()` en signal via `toSignal(..., { initialValue: [] })`.
+4. Remplacer les anciennes donnees statiques par ce nouveau signal dans le template.
 
 Fichiers a creer:
 
@@ -53,7 +73,19 @@ private readonly gameService = inject(GameService);
 protected readonly games = toSignal(this.gameService.getGames(), { initialValue: [] });
 ```
 
+Check rapide navigateur:
+
+- Au chargement, la grille finit par afficher les donnees API.
+- Pas d'erreur TypeScript sur les proprietes `game.title`, `game.rating`, etc.
+
 ## Sous-concept 3 - Gerer loading et erreurs
+
+Implementation pas a pas (ordre conseille):
+
+1. Initialiser `isLoading` a `true` et `errorMessage` a `null`.
+2. Mettre `isLoading` a `false` quand la reponse API arrive.
+3. En cas d'erreur HTTP, alimenter `errorMessage`.
+4. Afficher/masquer les messages dans `app.template.html` avec `@if`.
 
 Fichiers a modifier:
 
@@ -79,3 +111,9 @@ protected readonly errorMessage = signal<string | null>(null);
 <p class="alert alert-error">{{ errorMessage() }}</p>
 }
 ```
+
+Check rapide navigateur:
+
+- Pendant le chargement: message "Chargement..." visible.
+- En erreur API: message d'erreur visible.
+- En succes: les messages disparaissent et la grille reste visible.

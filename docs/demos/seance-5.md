@@ -2,6 +2,13 @@
 
 ## Sous-concept 1 - Creer le formulaire login reactif
 
+Implementation pas a pas (ordre conseille):
+
+1. Creer `LoginPage` avec imports `ReactiveFormsModule`.
+2. Declarer le `FormGroup` (`email`, `password`) avec validators.
+3. Brancher `[formGroup]` et `(ngSubmit)` dans le template.
+4. Afficher les messages d'erreur de validation avec `@if`.
+
 Dossiers/fichiers a creer:
 
 - `src/app/pages/login/*`
@@ -23,7 +30,19 @@ protected readonly loginForm = new FormGroup({
 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">...</form>
 ```
 
+Check rapide navigateur:
+
+- Le bouton submit est bloque tant que le formulaire est invalide.
+- Les erreurs `required/email/minLength` deviennent visibles apres interaction.
+
 ## Sous-concept 2 - Implementer AuthService
+
+Implementation pas a pas (ordre conseille):
+
+1. Creer `AuthService` en `providedIn: 'root'`.
+2. Injecter `HttpClient` avec `inject()`.
+3. Ajouter `login(email, password)` type en `Observable<{ token: string }>`.
+4. Ajouter un etat local `authenticated` et une methode `isAuthenticated()`.
 
 Dossiers/fichiers a creer:
 
@@ -53,7 +72,20 @@ export class AuthService {
 }
 ```
 
+Check rapide navigateur:
+
+- Un login succes met a jour l'etat d'auth et permet l'acces aux routes protegees.
+- Un login invalide n'active pas l'etat authentifie.
+
 ## Sous-concept 3 - Ajouter l'interceptor HTTP
+
+Implementation pas a pas (ordre conseille):
+
+1. Creer `authInterceptor` en `HttpInterceptorFn`.
+2. Lire le token depuis le stockage local.
+3. Si token absent: passer la requete sans modification.
+4. Si token present: cloner la requete et injecter `Authorization`.
+5. Enregistrer l'interceptor dans `app.config.ts`.
 
 Dossiers/fichiers a creer:
 
@@ -80,3 +112,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
 // Branche l'interceptor globalement sur toutes les requetes HttpClient.
 provideHttpClient(withInterceptors([authInterceptor]));
 ```
+
+Check rapide navigateur:
+
+- Requete API apres login: header `Authorization` present (verifiable onglet Network).
+- Sans token: les requetes sortent sans header ajoute.

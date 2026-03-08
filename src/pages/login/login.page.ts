@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { firstValueFrom } from 'rxjs';
 
+import { MOCK_AUTH_CREDENTIALS } from '../../features/auth/mock-auth.data';
 import { AuthService } from '../../features/auth/auth.service';
 
 type LoginForm = {
@@ -34,18 +36,15 @@ export class LoginPage {
 
   protected loginError = '';
 
-  protected readonly demoCredentials = {
-    email: 'teacher@wishflix.dev',
-    password: 'wishflix123',
-  } as const;
+  protected readonly demoCredentials = MOCK_AUTH_CREDENTIALS;
 
-  protected submit(): void {
+  protected async submit(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    const success = this.authService.login(this.form.getRawValue());
+    const success = await firstValueFrom(this.authService.login(this.form.getRawValue()));
 
     if (!success) {
       this.loginError = 'Identifiants invalides. Utilisez le compte demo.';

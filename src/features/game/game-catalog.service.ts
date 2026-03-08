@@ -1,23 +1,30 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { finalize } from 'rxjs';
 
 import { Game, GameCategory } from './game.model';
-import { MOCK_GAMES } from './mock-games';
+import { GAME_CATALOG_DATA_SOURCE } from './game-catalog.contract';
 
 export type CategoryFilter = 'all' | GameCategory;
 
 @Injectable({ providedIn: 'root' })
 export class GameCatalogService {
-  private readonly gamesState = signal<Game[]>(MOCK_GAMES);
+  private readonly gameCatalogDataSource = inject(GAME_CATALOG_DATA_SOURCE);
+
+  private readonly gamesState = signal<Game[]>([]);
   private readonly wishlistIdsState = signal<number[]>([]);
   private readonly searchTermState = signal('');
   private readonly categoryFilterState = signal<CategoryFilter>('all');
   private readonly onlyAvailableState = signal(false);
+  private readonly loadingState = signal(false);
+  private readonly errorState = signal<string | null>(null);
 
   readonly games = this.gamesState.asReadonly();
   readonly wishlistIds = this.wishlistIdsState.asReadonly();
   readonly searchTerm = this.searchTermState.asReadonly();
   readonly categoryFilter = this.categoryFilterState.asReadonly();
   readonly onlyAvailable = this.onlyAvailableState.asReadonly();
+  readonly isLoading = this.loadingState.asReadonly();
+  readonly loadingError = this.errorState.asReadonly();
 
   readonly heroGame = computed(
     () => this.gamesState().find((game) => game.hero) ?? this.gamesState()[0] ?? null,
@@ -57,6 +64,32 @@ export class GameCatalogService {
   readonly availableCount = computed(
     () => this.gamesState().filter((game) => game.available).length,
   );
+
+  constructor() {
+    this.loadGames();
+  }
+
+  loadGames(): void {
+    if (this.loadingState()) {
+      return;
+    }
+
+    this.loadingState.set(true);
+    this.errorState.set(null);
+
+    this.gameCatalogDataSource
+      .fetchGames()
+      .pipe(finalize(() => this.loadingState.set(false)))
+      .subscribe({
+        next: (games) => {
+          this.gamesState.set(games);
+        },
+        error: () => {
+          this.gamesState.set([]);
+          this.errorState.set('Le catalogue est indisponible pour le moment.');
+        },
+      });
+  }
 
   setSearchTerm(value: string): void {
     this.searchTermState.set(value);

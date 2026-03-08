@@ -1,13 +1,30 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
+import { of } from 'rxjs';
 
+import { AUTH_DATA_SOURCE } from '../features/auth/auth.contract';
+import { GAME_CATALOG_DATA_SOURCE } from '../features/game/game-catalog.contract';
 import { App } from './app';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
-      providers: [provideRouter([])],
+      providers: [
+        provideRouter([]),
+        {
+          provide: AUTH_DATA_SOURCE,
+          useValue: {
+            authenticate: () => of(null),
+          },
+        },
+        {
+          provide: GAME_CATALOG_DATA_SOURCE,
+          useValue: {
+            fetchGames: () => of([]),
+          },
+        },
+      ],
     }).compileComponents();
   });
 

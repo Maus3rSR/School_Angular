@@ -25,6 +25,8 @@ export class HomePage {
   protected readonly searchTerm = this.gameCatalog.searchTerm;
   protected readonly categoryFilter = this.gameCatalog.categoryFilter;
   protected readonly onlyAvailable = this.gameCatalog.onlyAvailable;
+  protected readonly isLoading = this.gameCatalog.isLoading;
+  protected readonly loadingError = this.gameCatalog.loadingError;
 
   protected readonly filterAvailabilityLabel = computed(() =>
     this.onlyAvailable() ? 'Voir tout le catalogue' : 'Afficher seulement disponibles',

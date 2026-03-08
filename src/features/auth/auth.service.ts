@@ -1,34 +1,31 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { map, Observable, tap } from 'rxjs';
 
+import { AUTH_DATA_SOURCE } from './auth.contract';
 import { CurrentUser, LoginCredentials } from './auth.model';
-
-const DEMO_ACCOUNT = {
-  id: 1,
-  name: 'Prof WishFlix',
-  email: 'teacher@wishflix.dev',
-} as const;
-
-const DEMO_PASSWORD = 'wishflix123';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
+  private readonly authDataSource = inject(AUTH_DATA_SOURCE);
+
   private readonly currentUserState = signal<CurrentUser | null>(null);
   private readonly tokenState = signal<string | null>(null);
 
   readonly currentUser = this.currentUserState.asReadonly();
   readonly isAuthenticated = computed(() => this.currentUserState() !== null);
 
-  login(credentials: LoginCredentials): boolean {
-    const isValidEmail = credentials.email.trim().toLowerCase() === DEMO_ACCOUNT.email;
-    const isValidPassword = credentials.password === DEMO_PASSWORD;
+  login(credentials: LoginCredentials): Observable<boolean> {
+    return this.authDataSource.authenticate(credentials).pipe(
+      tap((session) => {
+        if (!session) {
+          return;
+        }
 
-    if (!isValidEmail || !isValidPassword) {
-      return false;
-    }
-
-    this.currentUserState.set({ ...DEMO_ACCOUNT });
-    this.tokenState.set('wishflix-demo-token');
-    return true;
+        this.currentUserState.set(session.user);
+        this.tokenState.set(session.token);
+      }),
+      map((session) => session !== null),
+    );
   }
 
   logout(): void {

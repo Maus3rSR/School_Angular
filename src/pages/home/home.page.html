@@ -94,6 +94,12 @@
     </div>
   </div>
 
+  <!--
+    Control flow natif (@if/@for): le template reste lisible sans directives structurelles legacy.
+    Avec track game.id, Angular réutilise le DOM existant et limite les rerenders en cas de filtre.
+    Dans WishFlix, c'est utile quand la liste de jeux change souvent (recherche, catégorie, dispo).
+    Pour aller plus loin: https://angular.dev/guide/templates/control-flow
+  -->
   @if (filteredGames().length === 0) {
     <div class="alert alert-info wish-home__empty" role="status">
       Aucun jeu ne correspond a ces filtres.

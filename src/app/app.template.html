@@ -27,6 +27,12 @@
     <div class="navbar-end wishflix-shell__user">
       <span class="wishflix-shell__user-label">{{ userLabel() }}</span>
 
+      <!--
+        @if pilote l'affichage conditionnel directement dans le template sans *ngIf historique.
+        Le shell garde une logique lisible: action login si anonyme, logout si authentifié.
+        Dans WishFlix, cette règle est centralisée dans la navbar et suit le signal isAuthenticated.
+        Pour aller plus loin: https://angular.dev/guide/templates/control-flow
+      -->
       @if (isAuthenticated()) {
         <flix-button type="ghost" size="sm" (click)="logout()">Se deconnecter</flix-button>
       } @else {

@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { map, Observable } from 'rxjs';
 
 import { Game } from '../game.model';
-import { GameCatalogDataSource } from '../game-catalog.contract';
+import { GameCatalogDataSource } from './game-catalog.contract';
 
 type GameDto = {
   id: number;
@@ -24,6 +24,12 @@ type GameDto = {
 export class HttpGameCatalogDataSource implements GameCatalogDataSource {
   private readonly http = inject(HttpClient);
 
+  /**
+   * Adapter HTTP: transforme une réponse API en contrat métier GameCatalogDataSource.
+   * Ce mapping isole la structure réseau (DTO) du reste de l'application.
+   * Dans WishFlix, on pourra changer d'endpoint sans impacter GameCatalogService.
+   * Pour aller plus loin: https://angular.dev/guide/http/making-requests
+   */
   fetchGames(): Observable<Game[]> {
     return this.http.get<GameDto[]>('/api/games.json').pipe(
       map((items) =>

@@ -23,6 +23,12 @@ export class LoginPage {
   private readonly router = inject(Router);
   private readonly route = inject(ActivatedRoute);
 
+  /**
+   * Reactive Forms typé: le formulaire devient une source de vérité explicite et testable.
+   * Les validateurs sont centralisés côté TypeScript, donc faciles à faire évoluer sans logique cachée.
+   * Dans WishFlix, cela sécurise la saisie de login avant l'appel au service d'auth.
+   * Pour aller plus loin: https://angular.dev/guide/forms/reactive-forms
+   */
   protected readonly form = new FormGroup<LoginForm>({
     email: new FormControl('', {
       nonNullable: true,
@@ -38,6 +44,12 @@ export class LoginPage {
 
   protected readonly demoCredentials = MOCK_AUTH_CREDENTIALS;
 
+  /**
+   * firstValueFrom convertit un Observable en Promise pour simplifier le flux async/await.
+   * C'est pratique dans un handler UI court, tout en gardant AuthService orienté Observable (HTTP-friendly).
+   * On évite ainsi de dupliquer la logique de conversion dans plusieurs pages.
+   * Pour aller plus loin: https://rxjs.dev/api/index/function/firstValueFrom
+   */
   protected async submit(): Promise<void> {
     if (this.form.invalid) {
       this.form.markAllAsTouched();

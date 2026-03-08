@@ -16,10 +16,23 @@ import { FlixButton } from '../../ui/button/flix-button';
 export class GameDetailPage {
   private readonly route = inject(ActivatedRoute);
   private readonly gameCatalog = inject(GameCatalogService);
+
+  /**
+   * toSignal relie un Observable Angular Router (paramMap) au modèle réactif par signaux.
+   * initialValue évite un état undefined au premier rendu, utile pour le SSR et l'UX.
+   * Dans WishFlix, la fiche se met à jour automatiquement quand l'id URL change.
+   * Pour aller plus loin: https://angular.dev/ecosystem/rxjs-interop
+   */
   private readonly paramMap = toSignal(this.route.paramMap, {
     initialValue: this.route.snapshot.paramMap,
   });
 
+  /**
+   * computed transforme le paramètre de route en identifiant numérique validé.
+   * Le garde-fou Number.isFinite évite de lancer une recherche invalide dans le catalogue.
+   * On obtient un rendu robuste: détail si id valide, état "introuvable" sinon.
+   * Pour aller plus loin: https://angular.dev/guide/signals#computed-signals
+   */
   protected readonly game = computed(() => {
     const idParam = this.paramMap().get('id');
     const gameId = Number(idParam);

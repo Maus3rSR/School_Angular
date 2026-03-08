@@ -10,6 +10,12 @@ export type CategoryFilter = 'all' | GameCategory;
 export class GameCatalogService {
   private readonly gameCatalogDataSource = inject(GAME_CATALOG_DATA_SOURCE);
 
+  /**
+   * Signals + computed: état local minimal, puis vues dérivées recalculées automatiquement.
+   * On évite des setters manuels en cascade (moins d'erreurs et meilleure lisibilité métier).
+   * Dans WishFlix, filtres, hero et wishlist restent synchronisés sans logique impérative dispersée.
+   * Pour aller plus loin: https://angular.dev/guide/signals
+   */
   private readonly gamesState = signal<Game[]>([]);
   private readonly wishlistIdsState = signal<number[]>([]);
   private readonly searchTermState = signal('');
@@ -69,6 +75,12 @@ export class GameCatalogService {
     this.loadGames();
   }
 
+  /**
+   * finalize() s'exécute en succès comme en erreur: idéal pour fermer un indicateur de chargement.
+   * On garde ainsi la règle "loading false" à un seul endroit au lieu de la dupliquer.
+   * Dans WishFlix, l'UI reste cohérente même si /api/games.json échoue.
+   * Pour aller plus loin: https://rxjs.dev/api/operators/finalize
+   */
   loadGames(): void {
     if (this.loadingState()) {
       return;

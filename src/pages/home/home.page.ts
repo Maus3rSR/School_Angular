@@ -17,6 +17,12 @@ import { FlixButton } from '../../ui/button/flix-button';
 export class HomePage {
   private readonly gameCatalog = inject(GameCatalogService);
 
+  /**
+   * Façade de page: HomePage expose les lectures du service sans réimplémenter la logique métier.
+   * Le template reste déclaratif, et les règles de filtrage/wishlist vivent dans GameCatalogService.
+   * Dans WishFlix, cela facilite les tests et évite la duplication entre pages catalogue/detail.
+   * Pour aller plus loin: https://angular.dev/guide/signals
+   */
   protected readonly heroGame = this.gameCatalog.heroGame;
   protected readonly filteredGames = this.gameCatalog.filteredGames;
   protected readonly categories = this.gameCatalog.categories;
@@ -28,6 +34,12 @@ export class HomePage {
   protected readonly isLoading = this.gameCatalog.isLoading;
   protected readonly loadingError = this.gameCatalog.loadingError;
 
+  /**
+   * computed dérive un libellé UI à partir d'un état booléen, sans stocker une seconde variable.
+   * La valeur est recalculée seulement si onlyAvailable change, donc comportement prévisible.
+   * Cela garde le template lisible (pas de ternaire répété dans le HTML).
+   * Pour aller plus loin: https://angular.dev/guide/signals#computed-signals
+   */
   protected readonly filterAvailabilityLabel = computed(() =>
     this.onlyAvailable() ? 'Voir tout le catalogue' : 'Afficher seulement disponibles',
   );

@@ -4,6 +4,12 @@
     <p>Les jeux que vous avez mis de cote pour plus tard.</p>
   </header>
 
+  <!--
+    Control flow natif: @if gère l'état vide, @for affiche la grille quand il y a des données.
+    Avec track game.id, Angular réutilise les cartes existantes au lieu de recréer tout le DOM.
+    Dans WishFlix, la suppression d'un favori reste fluide même avec beaucoup de jeux.
+    Pour aller plus loin: https://angular.dev/guide/templates/control-flow
+  -->
   @if (wishlistGames().length === 0) {
     <div class="alert alert-info" role="status">
       <span>Votre wishlist est vide.</span>

@@ -9,6 +9,12 @@ import { GAME_CATALOG_DATA_SOURCE } from '../features/game/api/game-catalog.cont
 import { HttpGameCatalogDataSource } from '../features/game/api/http-game-catalog.data-source';
 import { routes } from './app.routes';
 
+/**
+ * Le container DI mappe chaque token vers une implémentation concrète au démarrage.
+ * AuthService/GameCatalogService restent découplés (ils dépendent des tokens, pas des classes).
+ * Dans WishFlix, on peut brancher mock, HTTP réel ou double de test sans toucher au domaine.
+ * Pour aller plus loin: https://angular.dev/guide/di/dependency-injection-providers
+ */
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),

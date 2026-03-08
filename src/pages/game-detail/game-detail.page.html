@@ -1,3 +1,9 @@
+<!--
+  @if (...; as variable) crée un alias local (selectedGame) pour éviter de relire game() partout.
+  Ce pattern rend le template plus lisible et gère explicitement le cas "introuvable" dans @else.
+  Dans WishFlix, l'UX reste claire: fiche complète si id valide, message guidé sinon.
+  Pour aller plus loin: https://angular.dev/guide/templates/control-flow
+-->
 @if (game(); as selectedGame) {
   <section class="wish-detail">
     <figure class="wish-detail__backdrop">

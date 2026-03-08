@@ -6,6 +6,12 @@
         <p class="wish-section__subtitle">{{ subtitle() }}</p>
       }
     </div>
+    <!--
+      ng-content permet la projection de contenu: le parent injecte actions/stats/contenu dans des slots.
+      Le layout reste générique et réutilisable sans connaître le détail métier de chaque page.
+      Dans WishFlix, Home et d'autres pages partagent la même structure de section.
+      Pour aller plus loin: https://angular.dev/guide/components/content-projection
+    -->
     <div class="wish-section__actions">
       <ng-content select="[section-actions]" />
     </div>

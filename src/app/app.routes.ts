@@ -7,6 +7,12 @@ import { WishlistPage } from '../pages/wishlist/wishlist.page';
 import { LoginPage } from '../pages/login/login.page';
 import { NotFoundPage } from '../pages/not-found/not-found.page';
 
+/**
+ * Routing Angular: tableau central des URLs, composants cibles et protections d'accès.
+ * canActivate branche un guard déclaratif, ce qui évite de dupliquer des checks dans chaque page.
+ * Dans WishFlix, le flux est lisible: catalogue public, wishlist privée, fallback 404 explicite.
+ * Pour aller plus loin: https://angular.dev/guide/routing/define-routes
+ */
 export const routes: Routes = [
   {
     path: '',

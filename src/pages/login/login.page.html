@@ -2,11 +2,15 @@
   <div class="card wish-login__card">
     <div class="card-body">
       <h1 id="login-title" class="card-title">Connexion</h1>
-      <p class="wish-login__intro">
-        Connectez-vous pour proteger votre wishlist.
-      </p>
+      <p class="wish-login__intro">Connectez-vous pour proteger votre wishlist.</p>
 
       <form [formGroup]="form" (ngSubmit)="submit()" class="wish-login__form" novalidate>
+        <!--
+          Les messages d'erreur s'affichent avec @if selon touched + invalid des FormControl.
+          L'utilisateur reçoit un feedback immédiat, sans bloquer par des alertes globales.
+          Dans WishFlix, cela réduit les tentatives de login inutiles avec des données invalides.
+          Pour aller plus loin: https://angular.dev/guide/forms/form-validation
+        -->
         <label class="form-control" for="email">
           <span class="label-text">Email</span>
           <input id="email" type="email" class="input input-bordered" formControlName="email" />
@@ -17,7 +21,12 @@
 
         <label class="form-control" for="password">
           <span class="label-text">Mot de passe</span>
-          <input id="password" type="password" class="input input-bordered" formControlName="password" />
+          <input
+            id="password"
+            type="password"
+            class="input input-bordered"
+            formControlName="password"
+          />
           @if (form.controls.password.touched && form.controls.password.invalid) {
             <span class="label-text-alt text-error">Minimum 8 caracteres.</span>
           }

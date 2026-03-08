@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { GameCard } from '../../game/game-card.component';
+import { GameCard } from '../../game/card/game-card.component';
 import { GameCatalogService } from '../../core/services/game-catalog.service';
 
 @Component({

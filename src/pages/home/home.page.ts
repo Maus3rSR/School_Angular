@@ -2,7 +2,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { GameCard } from '../../game/game-card.component';
+import { GameCard } from '../../game/card/game-card.component';
 import { GameSection } from '../../layouts/game-section/game-section';
 import { GameCatalogService } from '../../core/services/game-catalog.service';
 import { FlixButton } from '../../ui/button/flix-button';

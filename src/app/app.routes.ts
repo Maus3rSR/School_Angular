@@ -1,33 +1,37 @@
 import { Routes } from '@angular/router';
 
 import { authGuard } from '../core/guards/auth.guard';
+import { HomePage } from '../pages/home/home.page';
+import { GameDetailPage } from '../pages/game-detail/game-detail.page';
+import { WishlistPage } from '../pages/wishlist/wishlist.page';
+import { LoginPage } from '../pages/login/login.page';
+import { NotFoundPage } from '../pages/not-found/not-found.page';
 
 export const routes: Routes = [
   {
     path: '',
-    loadComponent: () => import('../features/home/home.page').then((m) => m.HomePage),
+    component: HomePage,
     title: 'WishFlix - Accueil',
   },
   {
     path: 'games/:id',
-    loadComponent: () =>
-      import('../features/game-detail/game-detail.page').then((m) => m.GameDetailPage),
+    component: GameDetailPage,
     title: 'WishFlix - Detail',
   },
   {
     path: 'wishlist',
     canActivate: [authGuard],
-    loadComponent: () => import('../features/wishlist/wishlist.page').then((m) => m.WishlistPage),
+    component: WishlistPage,
     title: 'WishFlix - Wishlist',
   },
   {
     path: 'login',
-    loadComponent: () => import('../features/login/login.page').then((m) => m.LoginPage),
+    component: LoginPage,
     title: 'WishFlix - Connexion',
   },
   {
     path: '**',
-    loadComponent: () => import('../features/not-found/not-found.page').then((m) => m.NotFoundPage),
+    component: NotFoundPage,
     title: 'WishFlix - Introuvable',
   },
 ];

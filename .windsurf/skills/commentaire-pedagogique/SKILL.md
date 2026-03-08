@@ -8,7 +8,7 @@ description: Ajouter des commentaires pédagogiques avec lien vers la documentat
 - Chaque commentaire doit inclure **au moins 1 lien** vers la documentation officielle du concept (privilégier `https://angular.dev`). Pour les notions JavaScript ou TypeScript complexes pour les débutants, utiliser MDN ou la doc TypeScript officielle. Si plusieurs concepts sont combinés, plusieurs liens peuvent être ajoutés.
 - Format recommandé:
   - Ligne 1: nom du concept + rôle concret dans le projet.
-  - Lignes 2-4: explication technique du comportement, de l'impact sur les performances ou la maintenabilité, et justification du choix dans le contexte de WishFlix.
+  - Lignes 2-4: explication du fonctionnement technique, impact sur les performances ou la maintenabilité, et pourquoi ce choix est pertinent dans WishFlix (en tenant compte du nommage et du contexte métier du projet).
   - Ligne 5: lien "Pour aller plus loin" vers la doc.
 - Concepts prioritaires à commenter dans WishFlix: `signal`, `computed`, `@for`, `@if`, `input()/output()`, routing, guard, interceptor, reactive forms.
 - Écrire les commentaires en français simple, niveau débutant en reconversion avec quelques détails techniques.

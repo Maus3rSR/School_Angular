@@ -2,8 +2,8 @@ import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { FlixButton } from '../../ui/button/flix-button';
-import { Game } from '../game.model';
+import { FlixButton } from '../../../../ui/button/flix-button';
+import { Game } from '../../game.model';
 
 @Component({
   selector: 'game-card',

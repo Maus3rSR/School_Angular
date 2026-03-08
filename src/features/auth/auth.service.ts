@@ -1,6 +1,6 @@
 import { computed, Injectable, signal } from '@angular/core';
 
-import { CurrentUser, LoginCredentials } from '../models/auth.model';
+import { CurrentUser, LoginCredentials } from './auth.model';
 
 const DEMO_ACCOUNT = {
   id: 1,

@@ -2,7 +2,7 @@ import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { provideRouter, withInMemoryScrolling, withViewTransitions } from '@angular/router';
 
-import { authTokenInterceptor } from '../core/interceptors/auth-token.interceptor';
+import { authTokenInterceptor } from '../features/auth/auth-token.interceptor';
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {

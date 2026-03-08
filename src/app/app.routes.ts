@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 
-import { authGuard } from '../core/guards/auth.guard';
+import { authGuard } from '../features/auth/auth.guard';
 import { HomePage } from '../pages/home/home.page';
 import { GameDetailPage } from '../pages/game-detail/game-detail.page';
 import { WishlistPage } from '../pages/wishlist/wishlist.page';

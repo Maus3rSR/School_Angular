@@ -1,7 +1,7 @@
 import { computed, Injectable, signal } from '@angular/core';
 
-import { Game, GameCategory } from '../../game/game.model';
-import { MOCK_GAMES } from '../data/mock-games';
+import { Game, GameCategory } from './game.model';
+import { MOCK_GAMES } from './mock-games';
 
 export type CategoryFilter = 'all' | GameCategory;
 

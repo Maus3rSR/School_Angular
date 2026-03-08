@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 
-import { AuthService } from '../core/services/auth.service';
-import { GameCatalogService } from '../core/services/game-catalog.service';
+import { AuthService } from '../features/auth/auth.service';
+import { GameCatalogService } from '../features/game/game-catalog.service';
 import { FlixButton } from '../ui/button/flix-button';
 
 @Component({

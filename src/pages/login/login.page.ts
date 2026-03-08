@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 
-import { AuthService } from '../../core/services/auth.service';
+import { AuthService } from '../../features/auth/auth.service';
 
 type LoginForm = {
   email: FormControl<string>;

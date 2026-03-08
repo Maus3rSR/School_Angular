@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/c
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
-import { GameCatalogService } from '../../core/services/game-catalog.service';
+import { GameCatalogService } from '../../features/game/game-catalog.service';
 import { FlixButton } from '../../ui/button/flix-button';
 
 @Component({

@@ -1,4 +1,4 @@
-import { Game } from '../../game/game.model';
+import { Game } from './game.model';
 
 export const MOCK_GAMES: Game[] = [
   {
@@ -53,7 +53,8 @@ export const MOCK_GAMES: Game[] = [
     platforms: ['PC', 'PS4', 'Xbox One'],
     rating: 4.8,
     category: 'Aventure',
-    description: 'Explorez un monde fantastique rempli de donjons, d enigmes et de creatures mystiques.',
+    description:
+      'Explorez un monde fantastique rempli de donjons, d enigmes et de creatures mystiques.',
     available: true,
     hero: false,
     playtime: '51h',
@@ -67,7 +68,8 @@ export const MOCK_GAMES: Game[] = [
     platforms: ['PC', 'Switch'],
     rating: 4.3,
     category: 'Independant',
-    description: 'Un rogue-lite retro en pixel-art avec des combats rapides et des builds toujours differents.',
+    description:
+      'Un rogue-lite retro en pixel-art avec des combats rapides et des builds toujours differents.',
     available: true,
     hero: false,
     playtime: '23h',
@@ -81,7 +83,8 @@ export const MOCK_GAMES: Game[] = [
     platforms: ['PC', 'PS5', 'Xbox Series'],
     rating: 4.1,
     category: 'Multijoueur',
-    description: '100 joueurs, une arene qui se referme et des affrontements intenses jusqu au dernier survivant.',
+    description:
+      '100 joueurs, une arene qui se referme et des affrontements intenses jusqu au dernier survivant.',
     available: false,
     hero: false,
     playtime: 'Always online',

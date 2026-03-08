@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
-import { GameCard } from '../../game/card/game-card.component';
-import { GameCatalogService } from '../../core/services/game-catalog.service';
+import { GameCard } from '../../features/game/components/card/game-card.component';
+import { GameCatalogService } from '../../features/game/game-catalog.service';
 
 @Component({
   selector: 'wish-wishlist-page',

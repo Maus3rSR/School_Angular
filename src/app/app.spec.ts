@@ -2,8 +2,8 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 
-import { AUTH_DATA_SOURCE } from '../features/auth/auth.contract';
-import { GAME_CATALOG_DATA_SOURCE } from '../features/game/game-catalog.contract';
+import { AUTH_DATA_SOURCE } from '../features/auth/api/auth.contract';
+import { GAME_CATALOG_DATA_SOURCE } from '../features/game/api/game-catalog.contract';
 import { App } from './app';
 
 describe('App', () => {

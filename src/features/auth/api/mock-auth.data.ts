@@ -1,4 +1,4 @@
-import { LoginCredentials } from './auth.model';
+import { LoginCredentials } from '../auth.model';
 
 export const MOCK_AUTH_ACCOUNT = {
   id: 1,

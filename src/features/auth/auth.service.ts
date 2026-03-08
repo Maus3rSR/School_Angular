@@ -1,7 +1,7 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { map, Observable, tap } from 'rxjs';
 
-import { AUTH_DATA_SOURCE } from './auth.contract';
+import { AUTH_DATA_SOURCE } from './api/auth.contract';
 import { CurrentUser, LoginCredentials } from './auth.model';
 
 @Injectable({ providedIn: 'root' })

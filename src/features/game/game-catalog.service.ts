@@ -2,7 +2,7 @@ import { computed, inject, Injectable, signal } from '@angular/core';
 import { finalize } from 'rxjs';
 
 import { Game, GameCategory } from './game.model';
-import { GAME_CATALOG_DATA_SOURCE } from './game-catalog.contract';
+import { GAME_CATALOG_DATA_SOURCE } from './api/game-catalog.contract';
 
 export type CategoryFilter = 'all' | GameCategory;
 

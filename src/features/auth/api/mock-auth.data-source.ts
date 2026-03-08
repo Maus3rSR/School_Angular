@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 
 import { AuthDataSource, AuthSession } from './auth.contract';
 import { MOCK_AUTH_ACCOUNT, MOCK_AUTH_PASSWORD } from './mock-auth.data';
-import { LoginCredentials } from './auth.model';
+import { LoginCredentials } from '../auth.model';
 
 @Injectable()
 export class MockAuthDataSource implements AuthDataSource {

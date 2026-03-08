@@ -1,7 +1,7 @@
 import { InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { CurrentUser, LoginCredentials } from './auth.model';
+import { CurrentUser, LoginCredentials } from '../auth.model';
 
 export type AuthSession = {
   user: CurrentUser;

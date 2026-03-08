@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { firstValueFrom } from 'rxjs';
 
-import { MOCK_AUTH_CREDENTIALS } from '../../features/auth/mock-auth.data';
+import { MOCK_AUTH_CREDENTIALS } from '../../features/auth/api/mock-auth.data';
 import { AuthService } from '../../features/auth/auth.service';
 
 type LoginForm = {

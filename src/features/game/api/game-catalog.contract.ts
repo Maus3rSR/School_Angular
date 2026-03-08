@@ -1,7 +1,7 @@
 import { InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Game } from './game.model';
+import { Game } from '../game.model';
 
 export type GameCatalogDataSource = {
   fetchGames(): Observable<Game[]>;

@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { map, Observable } from 'rxjs';
 
-import { Game } from './game.model';
-import { GameCatalogDataSource } from './game-catalog.contract';
+import { Game } from '../game.model';
+import { GameCatalogDataSource } from '../game-catalog.contract';
 
 type GameDto = {
   id: number;

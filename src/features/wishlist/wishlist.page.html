@@ -1,0 +1,19 @@
+<section class="wish-wishlist">
+  <header class="wish-wishlist__header">
+    <h1>Ma wishlist</h1>
+    <p>Les jeux que vous avez mis de cote pour plus tard.</p>
+  </header>
+
+  @if (wishlistGames().length === 0) {
+    <div class="alert alert-info" role="status">
+      <span>Votre wishlist est vide.</span>
+      <a class="link link-primary" routerLink="/">Retour au catalogue</a>
+    </div>
+  } @else {
+    <div class="wish-wishlist__grid">
+      @for (game of wishlistGames(); track game.id) {
+        <game-card [game]="game" [favorite]="true" (wishlistToggle)="toggleWishlist($event)" />
+      }
+    </div>
+  }
+</section>

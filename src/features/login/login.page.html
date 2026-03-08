@@ -1,0 +1,42 @@
+<section class="wish-login" aria-labelledby="login-title">
+  <div class="card wish-login__card">
+    <div class="card-body">
+      <h1 id="login-title" class="card-title">Connexion</h1>
+      <p class="wish-login__intro">
+        Connectez-vous pour proteger votre wishlist.
+      </p>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="wish-login__form" novalidate>
+        <label class="form-control" for="email">
+          <span class="label-text">Email</span>
+          <input id="email" type="email" class="input input-bordered" formControlName="email" />
+          @if (form.controls.email.touched && form.controls.email.invalid) {
+            <span class="label-text-alt text-error">Email invalide.</span>
+          }
+        </label>
+
+        <label class="form-control" for="password">
+          <span class="label-text">Mot de passe</span>
+          <input id="password" type="password" class="input input-bordered" formControlName="password" />
+          @if (form.controls.password.touched && form.controls.password.invalid) {
+            <span class="label-text-alt text-error">Minimum 8 caracteres.</span>
+          }
+        </label>
+
+        @if (loginError.length > 0) {
+          <div class="alert alert-error" role="alert">{{ loginError }}</div>
+        }
+
+        <button class="btn btn-primary" type="submit">Se connecter</button>
+      </form>
+
+      <div class="divider"></div>
+
+      <p class="wish-login__demo-title">Compte demo</p>
+      <p><strong>Email:</strong> {{ demoCredentials.email }}</p>
+      <p><strong>Mot de passe:</strong> {{ demoCredentials.password }}</p>
+
+      <a class="link link-primary" routerLink="/">Retour au catalogue</a>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,45 @@
+<article class="card movie-card game-card" [attr.aria-label]="'Jeu ' + game().title">
+  <figure class="game-card__cover">
+    <img
+      [ngSrc]="game().coverImage"
+      [alt]="'Affiche de ' + game().title"
+      width="300"
+      height="450"
+      loading="lazy"
+    />
+  </figure>
+
+  <div class="card-body game-card__body">
+    <div class="game-card__badges">
+      <span class="badge badge-secondary">{{ game().category }}</span>
+      <span class="badge" [class]="game().available ? 'badge-success' : 'badge-error'">
+        {{ game().available ? 'Disponible' : 'Bientot disponible' }}
+      </span>
+    </div>
+
+    <h3 class="card-title game-card__title">{{ game().title }}</h3>
+    <p class="game-card__meta">{{ game().year }} - {{ game().platforms.join(', ') }}</p>
+
+    <div class="game-card__rating" aria-label="Note moyenne">
+      <span class="game-card__rating-value">{{ game().rating }}</span>
+      <span class="game-card__rating-max">/5</span>
+    </div>
+
+    <p class="game-card__synopsis">{{ game().description }}</p>
+
+    <div class="card-actions game-card__actions">
+      <a class="btn btn-sm btn-ghost" [routerLink]="['/games', game().id]" [attr.aria-label]="'Voir les details de ' + game().title">
+        Details
+      </a>
+
+      <flix-button
+        size="sm"
+        [type]="favorite() ? 'secondary' : 'outline'"
+        (click)="toggleFavorite()"
+        [attr.aria-pressed]="favorite()"
+      >
+        {{ favorite() ? 'Retirer' : 'Wishlist' }}
+      </flix-button>
+    </div>
+  </div>
+</article>

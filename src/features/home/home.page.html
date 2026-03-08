@@ -1,0 +1,112 @@
+@if (heroGame(); as hero) {
+  <section class="hero wishflix-hero" aria-labelledby="hero-title">
+    <figure class="wishflix-hero__backdrop">
+      <img
+        [ngSrc]="hero.backdropImage"
+        [alt]="'Image de couverture de ' + hero.title"
+        width="1600"
+        height="900"
+        priority
+      />
+    </figure>
+    <div class="wishflix-hero__veil" aria-hidden="true"></div>
+
+    <div class="hero-content wishflix-hero__content">
+      <div class="wishflix-hero__text">
+        <p class="wishflix-hero__kicker">Nouveaute WishFlix</p>
+        <div class="wishflix-hero__meta">
+          <span class="badge badge-primary">A la une</span>
+          <span class="badge badge-ghost">{{ hero.category }}</span>
+          <span class="badge badge-outline">{{ hero.platforms.join(', ') }}</span>
+        </div>
+
+        <h1 id="hero-title" class="wishflix-hero__title">{{ hero.title }}</h1>
+        <p class="wishflix-hero__description">{{ hero.description }}</p>
+        <p class="wishflix-hero__details">
+          {{ hero.year }} | {{ hero.rating }}/5 | {{ hero.playtime }}
+        </p>
+
+        <div class="wishflix-hero__actions">
+          <a class="btn btn-primary btn-lg" [routerLink]="['/games', hero.id]">Voir la fiche</a>
+          <flix-button type="outline" size="lg" (click)="toggleWishlist(hero.id)">
+            {{ isFavorite(hero.id) ? 'Retirer de la wishlist' : 'Ajouter a la wishlist' }}
+          </flix-button>
+        </div>
+      </div>
+    </div>
+  </section>
+}
+
+<game-section title="Catalogue" subtitle="Filtres, navigation et cards dynamiques">
+  <div section-actions class="wish-home__filters">
+    <label class="form-control wish-home__search" for="game-search">
+      <span class="label-text">Rechercher</span>
+      <input
+        id="game-search"
+        type="search"
+        class="input input-bordered"
+        [value]="searchTerm()"
+        (input)="onSearchInput($event)"
+        placeholder="Titre ou mot-cle"
+      />
+    </label>
+
+    <label class="form-control" for="game-category">
+      <span class="label-text">Categorie</span>
+      <select
+        id="game-category"
+        class="select select-bordered"
+        [value]="categoryFilter()"
+        (change)="onCategoryChange($event)"
+      >
+        @for (category of categories(); track category) {
+          <option [value]="category">
+            {{ category === 'all' ? 'Toutes' : category }}
+          </option>
+        }
+      </select>
+    </label>
+
+    <flix-button type="secondary" (click)="toggleOnlyAvailable()">
+      {{ filterAvailabilityLabel() }}
+    </flix-button>
+  </div>
+
+  <div
+    section-stats
+    class="stats shadow wish-home__stats"
+    role="group"
+    aria-label="Statistiques catalogue"
+  >
+    <div class="stat">
+      <div class="stat-title">Jeux disponibles</div>
+      <div class="stat-value text-primary">{{ availableCount() }}</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-title">Resultats filtres</div>
+      <div class="stat-value text-secondary">{{ filteredGames().length }}</div>
+    </div>
+
+    <div class="stat">
+      <div class="stat-title">Ma wishlist</div>
+      <div class="stat-value text-accent">{{ wishlistCount() }}</div>
+    </div>
+  </div>
+
+  @if (filteredGames().length === 0) {
+    <div class="alert alert-info wish-home__empty" role="status">
+      Aucun jeu ne correspond a ces filtres.
+    </div>
+  } @else {
+    <div class="wish-home__grid">
+      @for (game of filteredGames(); track game.id) {
+        <game-card
+          [game]="game"
+          [favorite]="isFavorite(game.id)"
+          (wishlistToggle)="toggleWishlist($event)"
+        />
+      }
+    </div>
+  }
+</game-section>

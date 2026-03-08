@@ -1,10 +1,13 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+
 import { App } from './app';
 
 describe('App', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [App],
+      providers: [provideRouter([])],
     }).compileComponents();
   });
 
@@ -21,10 +24,12 @@ describe('App', () => {
     expect(compiled.querySelector('.wishflix-shell__brand')?.textContent).toContain('WishFlix');
   });
 
-  it('should display at least one movie card on startup', async () => {
+  it('should display login action by default', async () => {
     const fixture = TestBed.createComponent(App);
     await fixture.whenStable();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelectorAll('.movie-card').length).toBeGreaterThan(0);
+    expect(compiled.querySelector('.wishflix-shell__user .btn-primary')?.textContent).toContain(
+      'Se connecter',
+    );
   });
 });

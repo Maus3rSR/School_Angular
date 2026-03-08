@@ -1,0 +1,58 @@
+@if (game(); as selectedGame) {
+  <section class="wish-detail">
+    <figure class="wish-detail__backdrop">
+      <img
+        [ngSrc]="selectedGame.backdropImage"
+        [alt]="'Image de couverture de ' + selectedGame.title"
+        width="1600"
+        height="900"
+        priority
+      />
+    </figure>
+
+    <div class="wish-detail__veil" aria-hidden="true"></div>
+
+    <div class="wish-detail__content">
+      <a class="btn btn-ghost btn-sm" routerLink="/">Retour au catalogue</a>
+
+      <p class="wish-detail__kicker">Fiche jeu</p>
+      <h1 class="wish-detail__title">{{ selectedGame.title }}</h1>
+
+      <div class="wish-detail__meta">
+        <span class="badge badge-primary">{{ selectedGame.category }}</span>
+        <span class="badge badge-outline">{{ selectedGame.year }}</span>
+        <span class="badge badge-ghost">{{ selectedGame.platforms.join(', ') }}</span>
+      </div>
+
+      <p class="wish-detail__description">{{ selectedGame.description }}</p>
+
+      <ul class="wish-detail__facts" aria-label="Informations sur le jeu">
+        <li>
+          <strong>Note:</strong>
+          {{ selectedGame.rating }}/5
+        </li>
+        <li>
+          <strong>Duree:</strong>
+          {{ selectedGame.playtime }}
+        </li>
+        <li>
+          <strong>Etat:</strong>
+          {{ selectedGame.available ? 'Disponible' : 'Bientot disponible' }}
+        </li>
+      </ul>
+
+      <div class="wish-detail__actions">
+        <flix-button type="secondary" (click)="toggleWishlist(selectedGame.id)">
+          {{ isFavorite(selectedGame.id) ? 'Retirer de la wishlist' : 'Ajouter a la wishlist' }}
+        </flix-button>
+        <a class="btn btn-outline" routerLink="/wishlist">Voir ma wishlist</a>
+      </div>
+    </div>
+  </section>
+} @else {
+  <section class="wish-detail__missing">
+    <h1>Jeu introuvable</h1>
+    <p>Ce jeu n existe pas dans le catalogue local.</p>
+    <a class="btn btn-primary" routerLink="/">Retour a l accueil</a>
+  </section>
+}

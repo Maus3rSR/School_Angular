@@ -4,6 +4,12 @@ Mini projet pedagogique Angular.
 
 L'objectif est de construire un mini Netflix "cheap" dédié aux jeux vidéo, pas à pas, en 5 séances de 3h30.
 
+## Commencer ici (important)
+
+Avant de parcourir le code, lis d'abord **`ADVICES.md`**.
+
+- `ADVICES.md` : guide de lecture du code final WishFlix (point d'entree, structure des dossiers, sens du dataflow entre composants/pages/services/API).
+
 ## Etat initial du projet
 
 - Un seul composant d'entree: `App`.

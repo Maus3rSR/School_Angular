@@ -2,6 +2,10 @@
 
 Ce dossier contient le support des 5 séances (3h30 chacune) pour construire WishFlix pas à pas.
 
+Guide complementaire (a lire en priorite):
+
+- `ADVICES.md` : guide de lecture du code final WishFlix (point d'entree, structure des dossiers, sens du dataflow entre composants/pages/services/API).
+
 ## État initial du projet
 
 - Un seul composant: `App`.

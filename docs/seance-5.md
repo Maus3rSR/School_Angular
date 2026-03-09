@@ -2,42 +2,43 @@
 
 ## 1) Objectifs pédagogiques
 
-- Créer les formulaires réactifs de login et de recherche.
+- Creer le formulaire reactif de login.
 - Mettre en place le flux de connexion (login/logout + token).
-- Ajouter un interceptor HTTP et finaliser la protection des routes.
+- Finaliser la securisation avec `authGuard` et interceptor HTTP.
 
 ## 2) Prérequis concrets
 
-- Avoir terminé la séance 4.
-- État de départ: pages et guard existent, mais pas de logique de formulaire/auth.
-- Dossiers à créer pendant la séance: `services/` (auth), `interceptors/`.
+- Avoir termine la seance 4.
+- Etat de depart: routing + detail/404 + fetching HTTP en place, mais aucune authentification.
+- Dossiers a creer pendant la seance: `features/auth/` et `pages/login/`.
 
-## 3) Explication théorique vulgarisée (contexte WishFlix)
+## 3) Explication theorique vulgarisee (contexte WishFlix)
 
-Cette séance transforme WishFlix en application privée partielle: l'utilisateur s'authentifie, le token est propagé automatiquement, et les pages protégées deviennent réellement sécurisées.
+Cette seance transforme WishFlix en application partiellement privee: l'utilisateur se connecte, le token est reutilise automatiquement via l'interceptor, et les routes sensibles sont protegees par un guard.
 
 ## 4) Lien avec le code du projet
 
-- `src/app/pages/login/`: formulaire réactif de connexion.
-- `src/app/services/auth.service.ts`: gestion token + état connecté.
-- `src/app/interceptors/auth.interceptor.ts`: ajout du header Authorization.
+- `src/pages/login/`: formulaire reactif de connexion.
+- `src/features/auth/auth.service.ts`: gestion session + token.
+- `src/features/auth/auth.guard.ts`: protection de route `wishlist`.
+- `src/features/auth/api/auth-token.interceptor.ts`: ajout du header Authorization.
 - `src/app/app.config.ts`: enregistrement interceptor.
 
 ## 5) Liste des sous-concepts
 
 1. Construire le formulaire login avec `FormGroup`.
 2. Implémenter `AuthService` et le flux login/logout.
-3. Ajouter l'interceptor et brancher le guard final.
+3. Ajouter `authGuard` + interceptor pour finaliser la securite.
 
-## 6) Liens vers les démos formateur
+## 6) Liens vers les demos formateur
 
-- Démos formateur: dossier `docs/demo/`.
+- Demos formateur: dossier `docs/demos/`.
 
-## 7) Liens vers les exercices étudiants
+## 7) Liens vers les exercices etudiants
 
-- Exercices étudiants: dossier `docs/exercices/`.
+- Exercices etudiants: dossier `docs/exercices/`.
 
 ## 8) Pistes d'extension (bonus)
 
 - Ajouter un validateur custom de mot de passe fort.
-- Gérer la déconnexion automatique sur 401.
+- Gerer la deconnexion automatique sur reponse 401.

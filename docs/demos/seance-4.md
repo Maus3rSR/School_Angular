@@ -1,112 +1,142 @@
 # Demos formateur - Seance 4
 
-Objectif de la seance: passer d'une home monolithique a une app multi-pages avec routing lazy et protection de route.
+Objectif de la seance: passer d'un catalogue local a un catalogue charge en HTTP, avec URL differente selon l'environnement dev/prod.
 
-## Sous-concept 1 - Creer les pages standalone
-
-Implementation pas a pas (ordre conseille):
-
-1. Creer les 4 pages (`home`, `game-detail`, `wishlist`, `not-found`).
-2. Mettre un template minimal par page pour valider l'affichage de chaque route.
-3. Importer uniquement les composants/directives necessaires dans chaque page.
-4. Ajouter la logique metier plus tard (apres validation du routing).
-
-Dossiers/fichiers a creer:
-
-- `src/app/pages/home/*`
-- `src/app/pages/game-detail/*`
-- `src/app/pages/wishlist/*`
-- `src/app/pages/not-found/*`
-
-Rappel de code a fournir (exemple Home):
-
-```ts
-@Component({
-  selector: 'app-home-page',
-  // Imports locaux: en standalone, on declare ici les composants utilises.
-  imports: [GameSectionComponent],
-  templateUrl: './home.page.html',
-  styleUrl: './home.page.css',
-})
-export class HomePage {}
-```
-
-Check rapide navigateur:
-
-- Si tu charges directement le composant dans une route de test, la page doit s'afficher sans erreur d'import.
-
-## Sous-concept 2 - Configurer le routing lazy
+## Sous-concept 1 - Brancher HttpClient dans l'application
 
 Implementation pas a pas (ordre conseille):
 
-1. Declarer la redirection `'' -> /home`.
-2. Ajouter les routes metier (`home`, `game/:id`, `wishlist`).
-3. Ajouter la wildcard `**` en dernier.
-4. Remplacer le contenu central de `app.template.html` par `<router-outlet />`.
+1. Ajouter `provideHttpClient()` dans `app.config.ts`.
+2. Verifier que l'application compile apres ajout du provider.
 
 Fichiers a modifier:
 
-- `src/app/app.routes.ts`
-- `src/app/app.template.html`
-
-Rappels de code a fournir:
-
-```ts
-import { Routes } from '@angular/router';
-import { GameDetailPage } from './pages/game-detail/game-detail.page';
-import { HomePage } from './pages/home/home.page';
-import { NotFoundPage } from './pages/not-found/not-found.page';
-import { WishlistPage } from './pages/wishlist/wishlist.page';
-
-export const routes: Routes = [
-  // Redirection de la racine vers la page principale.
-  { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomePage },
-  // :id = parametre dynamique dans l'URL pour afficher un jeu cible.
-  { path: 'game/:id', component: GameDetailPage },
-  { path: 'wishlist', component: WishlistPage },
-  // Route wildcard: doit rester en dernier pour capter les URLs inconnues.
-  { path: '**', component: NotFoundPage },
-];
-```
-
-```html
-<!-- Point d'ancrage ou le Router insere le composant associe a la route active -->
-<router-outlet />
-```
-
-Check rapide navigateur:
-
-- `/home` affiche la home.
-- `/game/1` affiche la page detail.
-- une URL inconnue affiche la 404.
-
-## Sous-concept 3 - Ajouter le guard
-
-Implementation pas a pas (ordre conseille):
-
-1. Creer `authGuard` dans `src/app/guards/auth.guard.ts`.
-2. Injecter `AuthService` et `Router` via `inject()`.
-3. Retourner `true` si authentifie, sinon `UrlTree` vers `/login`.
-4. Brancher le guard sur la route `wishlist` dans `app.routes.ts`.
-
-Dossiers/fichiers a creer:
-
-- `src/app/guards/auth.guard.ts`
+- `src/app/app.config.ts`
 
 Rappel de code a fournir:
 
 ```ts
-export const authGuard: CanActivateFn = () => {
-  // Un guard fonctionnel utilise inject() pour acceder aux services.
-  const authService = inject(AuthService);
-  const router = inject(Router);
-  // Si non connecte, on renvoie une UrlTree vers /login (redirection propre).
-  return authService.isAuthenticated() ? true : router.createUrlTree(['/login']);
+import { provideHttpClient } from '@angular/common/http';
+
+export const appConfig: ApplicationConfig = {
+  providers: [provideBrowserGlobalErrorListeners(), provideHttpClient(), provideRouter(routes)],
 };
 ```
 
 Check rapide navigateur:
 
-- Non connecte: acces `/wishlist` redirige vers `/login`.
-- Connecte: acces `/wishlist` autorise.
+- Plus d'erreur d'injection liee a `HttpClient`.
+
+## Sous-concept 2 - Charger le catalogue depuis HTTP
+
+Implementation pas a pas (ordre conseille):
+
+1. Injecter `HttpClient` dans `GameCatalogService` via `inject()`.
+2. Appeler l'endpoint catalogue via `environment.apiUrl`.
+3. Alimenter le signal `gamesState` avec la reponse.
+
+Fichiers a modifier:
+
+- `src/features/game/game-catalog.service.ts`
+
+Rappels de code a fournir:
+
+```ts
+private readonly http = inject(HttpClient);
+
+loadGames(): void {
+  this.loadingState.set(true);
+  this.errorState.set(null);
+
+  this.http.get<Game[]>(`${environment.apiUrl}/games`).subscribe({
+    next: (games) => {
+      this.gamesState.set(games);
+      this.loadingState.set(false);
+    },
+    error: () => {
+      this.gamesState.set([]);
+      this.errorState.set('Le catalogue est indisponible pour le moment.');
+      this.loadingState.set(false);
+    },
+  });
+}
+```
+
+```html
+<!-- src/pages/home/home.page.html (extrait) -->
+@if (isLoading()) {
+<p class="alert alert-info">Chargement du catalogue...</p>
+} @if (loadingError()) {
+<p class="alert alert-error">{{ loadingError() }}</p>
+} @if (!isLoading() && !loadingError()) {
+<section class="wishflix-catalogue">
+  <div class="wishflix-catalogue__grid">
+    @for (game of filteredGames(); track game.id) {
+    <article class="card game-card">
+      <h3 class="game-card__title">{{ game.title }}</h3>
+    </article>
+    }
+  </div>
+</section>
+}
+```
+
+```css
+/* src/pages/home/home.page.css (extrait) */
+.wishflix-catalogue__grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+}
+
+.game-card {
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 0.75rem;
+  padding: 1rem;
+}
+
+.game-card__title {
+  margin: 0;
+  font-size: 1rem;
+}
+```
+
+Check rapide navigateur:
+
+- Le catalogue s'affiche a partir des donnees HTTP.
+
+## Sous-concept 3 - Configurer les environnements dev/prod
+
+Implementation pas a pas (ordre conseille):
+
+1. Mettre une URL locale dans `environment.development.ts` (ex: JSON mock).
+2. Mettre l'URL cible dans `environment.ts` (prod).
+3. Expliquer que les fichiers d'environnement sont versionnes, sans secrets.
+
+Fichiers a modifier:
+
+- `src/environments/environment.development.ts`
+- `src/environments/environment.ts`
+
+Rappels de code a fournir:
+
+```ts
+// environment.development.ts
+export const environment = {
+  production: false,
+  apiUrl: 'http://localhost:3000',
+};
+```
+
+```ts
+// environment.ts
+export const environment = {
+  production: true,
+  apiUrl: 'https://api.wishflix.com',
+};
+```
+
+Check rapide navigateur:
+
+- En dev, l'app interroge la base locale/mock.
+- En build prod, l'app utilise l'URL de production.

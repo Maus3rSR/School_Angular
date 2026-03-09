@@ -1,6 +1,6 @@
 # Exercices etudiants - Seance 5
 
-Objectif de la seance: reproduire le flux login vu en demo, puis appliquer les memes mecanismes sur des cas auth complementaires sans faire de design.
+Objectif de la seance: reproduire le flux login vu en demo, puis finaliser la securisation avec guard et interceptor.
 
 ## Sous-concept 1 - Creer le formulaire login reactif
 
@@ -30,31 +30,36 @@ Bloc UI fourni (copier/coller autorise):
 
 ### Exercice 1 (5-10 min) - Reproduction
 
-Objectif: creer `login(email, password)` qui appelle l'API.
+Objectif: creer `login(email, password)` qui appelle l'API et met a jour l'etat de session.
 
 ### Exercice 2 (5-10 min) - Transfert
 
-Objectif: ajouter un signal `authError` pour exposer une erreur de connexion exploitable par l'UI.
+Objectif: ajouter une methode `token()` et un signal d'etat d'auth utilisable par guard/interceptor.
 
 Indice:
 
-- Utiliser un signal booleen pour l'etat d'auth.
+- Utiliser des signaux (`token`, `isAuthenticated`).
 
 Attendu navigateur:
 
 - Si login echoue, un message d'erreur est visible dans la page login.
 
-## Sous-concept 3 - Ajouter l'interceptor HTTP
+## Sous-concept 3 - Finaliser guard + interceptor
 
 ### Exercice 1 (5-10 min) - Reproduction
 
-Objectif: ajouter `Authorization: Bearer <token>` dans l'interceptor.
+Objectif: proteger `/wishlist` avec `authGuard` puis ajouter `Authorization: Bearer <token>` dans l'interceptor.
 
 ### Exercice 2 (5-10 min) - Transfert
 
-Objectif: ne pas ajouter le header `Authorization` pour les requetes vers `/auth/login`.
+Objectif: rediriger vers `/login?redirectTo=...` depuis le guard quand l'utilisateur n'est pas connecte.
 
 Contraintes:
 
 - Garder le projet compilable a la fin de l'exercice.
 - Conserver une logique simple et lisible (condition + `return next(req)`).
+
+Attendu navigateur:
+
+- Non connecte: acces `/wishlist` redirige vers login avec `redirectTo`.
+- Connecte: acces `/wishlist` autorise et header `Authorization` present sur les appels proteges.

@@ -1,5 +1,7 @@
 # Demos formateur - Seance 5
 
+Objectif de la seance: ajouter l'authentification sur la base du routing et du HTTP deja en place (login, session, guard, interceptor).
+
 ## Sous-concept 1 - Creer le formulaire login reactif
 
 Implementation pas a pas (ordre conseille):
@@ -11,7 +13,7 @@ Implementation pas a pas (ordre conseille):
 
 Dossiers/fichiers a creer:
 
-- `src/app/pages/login/*`
+- `src/pages/login/*`
 
 Rappels de code a fournir:
 
@@ -42,11 +44,11 @@ Implementation pas a pas (ordre conseille):
 1. Creer `AuthService` en `providedIn: 'root'`.
 2. Injecter `HttpClient` avec `inject()`.
 3. Ajouter `login(email, password)` type en `Observable<{ token: string }>`.
-4. Ajouter un etat local `authenticated` et une methode `isAuthenticated()`.
+4. Stocker l'etat de session (token + authentification) dans des signaux.
 
 Dossiers/fichiers a creer:
 
-- `src/app/services/auth.service.ts`
+- `src/features/auth/auth.service.ts`
 
 Rappels de code a fournir:
 
@@ -55,19 +57,28 @@ Rappels de code a fournir:
 export class AuthService {
   // inject() evite le constructeur et garde un service facilement testable.
   private readonly http = inject(HttpClient);
-  // Signal local: etat synchrone/reactif sans abonnement manuel.
+  // Signals locaux: source de verite de la session utilisateur.
+  private readonly tokenState = signal<string | null>(null);
   private readonly authenticated = signal(false);
 
   isAuthenticated(): boolean {
     return this.authenticated();
   }
 
+  token(): string | null {
+    return this.tokenState();
+  }
+
   login(email: string, password: string): Observable<{ token: string }> {
     // Reponse typee: le token est verifie par TypeScript avant usage (guard/interceptor).
-    return this.http.post<{ token: string }>(`${environment.apiUrl}/auth/login`, {
-      email,
-      password,
-    });
+    return this.http
+      .post<{ token: string }>(`${environment.apiUrl}/auth/login`, { email, password })
+      .pipe(
+        tap((session) => {
+          this.tokenState.set(session.token);
+          this.authenticated.set(true);
+        }),
+      );
   }
 }
 ```
@@ -77,30 +88,46 @@ Check rapide navigateur:
 - Un login succes met a jour l'etat d'auth et permet l'acces aux routes protegees.
 - Un login invalide n'active pas l'etat authentifie.
 
-## Sous-concept 3 - Ajouter l'interceptor HTTP
+## Sous-concept 3 - Finaliser la securite avec guard + interceptor
 
 Implementation pas a pas (ordre conseille):
 
-1. Creer `authInterceptor` en `HttpInterceptorFn`.
-2. Lire le token depuis le stockage local.
-3. Si token absent: passer la requete sans modification.
-4. Si token present: cloner la requete et injecter `Authorization`.
-5. Enregistrer l'interceptor dans `app.config.ts`.
+1. Creer `authGuard` et bloquer `/wishlist` si non connecte.
+2. Creer `authInterceptor` en `HttpInterceptorFn`.
+3. Lire le token depuis `AuthService`.
+4. Si token absent: passer la requete sans modification.
+5. Si token present: cloner la requete et injecter `Authorization`.
+6. Enregistrer l'interceptor dans `app.config.ts`.
 
 Dossiers/fichiers a creer:
 
-- `src/app/interceptors/auth.interceptor.ts`
+- `src/features/auth/auth.guard.ts`
+- `src/features/auth/api/auth-token.interceptor.ts`
 
 Fichiers a modifier:
 
+- `src/app/app.routes.ts`
 - `src/app/app.config.ts`
+
+Rappel de code a fournir (guard):
+
+```ts
+export const authGuard: CanActivateFn = (_route, state) => {
+  const authService = inject(AuthService);
+  const router = inject(Router);
+
+  return authService.isAuthenticated()
+    ? true
+    : router.createUrlTree(['/login'], { queryParams: { redirectTo: state.url } });
+};
+```
 
 Rappels de code a fournir:
 
 ```ts
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
-  // Lecture du token stocke localement apres connexion.
-  const token = localStorage.getItem('token');
+  const authService = inject(AuthService);
+  const token = authService.token();
   // Sans token: on transmet la requete telle quelle.
   if (!token) return next(req);
   // Avec token: on clone la requete et on ajoute Authorization.
@@ -115,5 +142,6 @@ provideHttpClient(withInterceptors([authInterceptor]));
 
 Check rapide navigateur:
 
+- Route `/wishlist`: redirection vers `/login` si non connecte.
 - Requete API apres login: header `Authorization` present (verifiable onglet Network).
 - Sans token: les requetes sortent sans header ajoute.

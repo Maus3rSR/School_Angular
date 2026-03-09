@@ -1,69 +1,61 @@
 # Exercices etudiants - Seance 4
 
-Objectif de la seance: reproduire le routing vu en demo, puis reutiliser les memes mecanismes sur une route complementaire sans refaire du design.
+Objectif de la seance: reproduire le chargement HTTP vu en demo, puis reutiliser les memes mecanismes avec une configuration d'environnement differente.
 
-## Sous-concept 1 - Creer les pages standalone
-
-### Exercice 1 (5-10 min) - Reproduction
-
-Objectif: creer `HomePage` et `NotFoundPage` en standalone.
-
-### Exercice 2 (5-10 min) - Transfert
-
-Objectif: creer une page `AboutPage` (presentation WishFlix) avec un lien retour home.
-
-Contrainte:
-
-- Reutiliser les classes DaisyUI/Tailwind deja presentes (pas de nouveau CSS).
-
-Bloc UI fourni (copier/coller autorise):
-
-```html
-<section class="container mx-auto py-10 px-4">
-  <h1 class="text-3xl font-bold mb-4">A propos de WishFlix</h1>
-  <p class="opacity-80 mb-6">Mini Netflix pedagogique dedie aux jeux video.</p>
-  <a routerLink="/home" class="btn btn-primary">Retour a l'accueil</a>
-</section>
-```
-
-## Sous-concept 2 - Configurer le routing lazy
+## Sous-concept 1 - Brancher HttpClient
 
 ### Exercice 1 (5-10 min) - Reproduction
 
-Objectif: declarer les routes `home`, `game/:id` et `**` en lazy loading.
+Objectif: ajouter `provideHttpClient()` dans `app.config.ts`.
 
 ### Exercice 2 (5-10 min) - Transfert
 
-Objectif: ajouter la route `about` en lazy loading + un lien de navigation.
+Objectif: verifier qu'un service existant peut bien injecter `HttpClient` via `inject()` sans erreur de compilation.
 
 Contraintes:
 
-- La route `**` reste la derniere.
-- Ne pas toucher au CSS.
+- Ne pas modifier le HTML/CSS.
+- Garder les imports au debut du fichier.
+
+## Sous-concept 2 - Charger le catalogue depuis HTTP
+
+### Exercice 1 (5-10 min) - Reproduction
+
+Objectif: remplacer la source locale du catalogue par un appel HTTP `GET` base sur `environment.apiUrl`.
+
+### Exercice 2 (5-10 min) - Transfert
+
+Objectif: ajouter l'etat d'erreur (`errorMessage`) en plus de `isLoading`.
+
+Contraintes:
+
+- Pas de `any`.
+- En cas d'erreur HTTP, vider le catalogue et afficher un message lisible.
 
 Bloc UI fourni (copier/coller autorise):
 
 ```html
-<nav class="flex gap-2">
-  <a routerLink="/home" class="btn btn-ghost btn-sm">Accueil</a>
-  <a routerLink="/about" class="btn btn-ghost btn-sm">A propos</a>
-</nav>
+@if (errorMessage()) {
+<p class="alert alert-error">{{ errorMessage() }}</p>
+}
 ```
 
-## Sous-concept 3 - Ajouter le guard
+## Sous-concept 3 - Configurer les environnements
 
 ### Exercice 1 (5-10 min) - Reproduction
 
-Objectif: creer `authGuard` qui bloque l'acces a `/wishlist` si non connecte.
+Objectif: configurer `environment.development.ts` avec une URL locale/mock.
 
 ### Exercice 2 (5-10 min) - Transfert
 
-Objectif: rediriger vers `/login` avec un query param `redirect` contenant l'URL cible.
+Objectif: configurer `environment.ts` avec une URL de production differente.
 
-Indice:
+Contraintes:
 
-- `router.createUrlTree(['/login'], { queryParams: { redirect: state.url } })`.
+- Les fichiers d'environnement sont versionnes.
+- Aucun secret (token, mot de passe, cle API privee) ne doit etre commit.
 
 Attendu navigateur:
 
-- En acces refuse sur `/wishlist`, l'URL devient `/login?redirect=%2Fwishlist`.
+- En dev, l'app interroge l'URL locale.
+- En prod, l'app utilise l'URL de production.

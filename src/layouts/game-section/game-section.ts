@@ -7,7 +7,7 @@ import { FlixButton } from '../../ui/button/flix-button';
 // Pour aller plus loin: https://angular.dev/essentials/components
 @Component({
   selector: 'game-section',
-  imports: [FlixButton],
+  imports: [],
   templateUrl: './game-section.html',
   styleUrl: './game-section.css',
 })

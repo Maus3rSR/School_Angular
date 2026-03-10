@@ -1,4 +1,5 @@
 import { Component, input, output } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
 import { Game } from './game.model';
 import { FlixButton } from '../ui/button/flix-button';
@@ -12,7 +13,7 @@ import { FlixButton } from '../ui/button/flix-button';
   // Angular peut mieux gerer priorite, dimensions et stabilite visuelle pendant le rendu.
   // Dans WishFlix, les affiches restent fluides et limitent les sauts de layout dans la grille.
   // Pour aller plus loin: https://angular.dev/guide/image-optimization
-  imports: [NgOptimizedImage, FlixButton],
+  imports: [NgOptimizedImage, FlixButton, RouterLink],
   selector: 'game-card',
   templateUrl: './game-card.template.html',
 })

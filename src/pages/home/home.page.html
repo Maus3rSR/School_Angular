@@ -44,7 +44,7 @@
   <!-- Le layout decide de l'emplacement, le parent decide du composant projete. -->
   <!-- Dans WishFlix, cela permet de faire evoluer le filtre sans toucher au layout global. -->
   <!-- Pour aller plus loin: https://angular.dev/guide/components/content-projection -->
-  <flix-button filter type="primary" (click)="filterByAvailibility()">
+  <flix-button filter type="primary" (click)="catalog.filterByAvailibility()">
     {{ filterAvailibilityLabel() }}
   </flix-button>
 
@@ -53,7 +53,7 @@
   <!-- Dans WishFlix, le nombre se met a jour des qu'un filtre est applique. -->
   <!-- Pour aller plus loin: https://angular.dev/guide/components/content-projection -->
   <ng-container stat-game-count>
-    {{ visibleGames().length }}
+    {{ catalog.visibleGames().length }}
   </ng-container>
 
   <!-- Slot nomme [stat-wishlist-count]: projette le total de jeux favoris. -->
@@ -61,14 +61,14 @@
   <!-- Dans WishFlix, l'indicateur wishlist reste synchronise avec les clics utilisateur. -->
   <!-- Pour aller plus loin: https://angular.dev/guide/components/content-projection -->
   <ng-container stat-wishlist-count>
-    {{ favoriteGameIds().length }}
+    {{ catalog.favoriteGameIds().length }}
   </ng-container>
 
   <!-- Control flow @for: repete la carte pour chaque element de visibleGames(). -->
   <!-- Avec track game.id, Angular reutilise les noeuds DOM existants au lieu de tout recreer. -->
   <!-- Dans WishFlix, la grille reste fluide pendant les filtres et toggles de favoris. -->
   <!-- Pour aller plus loin: https://angular.dev/guide/templates/control-flow -->
-  @for (game of visibleGames(); track game.id) {
+  @for (game of catalog.visibleGames(); track game.id) {
     <!-- Property binding: transmet chaque objet Game a l'input `game` de GameCard. -->
     <!-- Ce flux descendant rend les donnees predictibles et faciles a debugger. -->
     <!-- Dans WishFlix, chaque carte reflète exactement la source de verite du parent. -->
@@ -79,8 +79,8 @@
     <!-- Pour aller plus loin: https://angular.dev/guide/components/outputs -->
     <game-card
       [game]="game"
-      [isFavorite]="isFavorite(game.id)"
-      (favorite)="toggleFavorite($event)"
+      [isFavorite]="catalog.isFavorite(game.id)"
+      (favorite)="catalog.toggleFavorite($event)"
     ></game-card>
   }
 </game-section>

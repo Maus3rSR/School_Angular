@@ -2,7 +2,7 @@ import { Component, input, output } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { NgOptimizedImage } from '@angular/common';
 import { Game } from './game.model';
-import { FlixButton } from '../ui/button/flix-button';
+import { FlixButton } from '../../ui/button/flix-button';
 
 // @Component relie la classe TypeScript au template de la carte.
 // Angular cree une instance par jeu affiche et applique les bindings definis dans le HTML associe.

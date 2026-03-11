@@ -49,15 +49,12 @@ export class GameCatalog {
   loadGames(): void {
     this._state.set('LOADING');
 
-    this._dataSource
-      .fetchAll()
-      .pipe(delay(2000))
-      .subscribe({
-        next: (games) => {
-          this.games.set(games);
-          this._state.set('LOADED');
-        },
-      });
+    this._dataSource.fetchAll().subscribe({
+      next: (games) => {
+        this.games.set(games);
+        this._state.set('LOADED');
+      },
+    });
   }
 
   filterByAvailibility(): void {

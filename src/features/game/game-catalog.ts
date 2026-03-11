@@ -138,4 +138,8 @@ export class GameCatalog {
   isFavorite(gameId: number): boolean {
     return this._favoriteGameIds().includes(gameId);
   }
+
+  getGameSheet(gameId: number): Game | undefined {
+    return this.games().find((game) => game.id === gameId);
+  }
 }

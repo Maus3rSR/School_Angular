@@ -1,12 +1,17 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { Game } from './game.model';
 import { GameDatasource } from './game-datasource';
+import { delay } from 'rxjs';
+
+type State = 'IDLE' | 'LOADING' | 'ERROR' | 'LOADED';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GameCatalog {
   private readonly _dataSource = inject(GameDatasource);
+
+  protected readonly _state = signal<State>('IDLE');
 
   // signal<boolean>: stocke l'etat local du filtre "disponibles uniquement".
   // Quand sa valeur change, Angular notifie automatiquement les lectures reactives du template.
@@ -42,11 +47,17 @@ export class GameCatalog {
   });
 
   loadGames(): void {
-    this._dataSource.fetchAll().subscribe({
-      next: (games) => {
-        this.games.set(games);
-      },
-    });
+    this._state.set('LOADING');
+
+    this._dataSource
+      .fetchAll()
+      .pipe(delay(2000))
+      .subscribe({
+        next: (games) => {
+          this.games.set(games);
+          this._state.set('LOADED');
+        },
+      });
   }
 
   filterByAvailibility(): void {
@@ -79,5 +90,9 @@ export class GameCatalog {
 
   getGameSheet(gameId: number): Game | undefined {
     return this.games().find((game) => game.id === gameId);
+  }
+
+  isState(state: State): boolean {
+    return this._state() === state;
   }
 }
